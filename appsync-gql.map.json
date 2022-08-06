@@ -1,0 +1,71 @@
+{
+  "Query": {
+    "fields": {
+      "hi": "Req",
+      "hello": {
+        "directives": {
+          "test": {
+            "requires": "test",
+            "other": "test"
+          }
+        },
+        "type": "Req",
+        "args": {
+          "id": "ID!"
+        }
+      },
+      "getReq": "Req",
+      "otherReq": {
+        "directives": {
+          "test": {
+            "requires": "test",
+            "other": "test"
+          }
+        },
+        "type": "Req",
+        "args": {
+          "id": "ID!"
+        }
+      }
+    }
+  },
+  "Req": {
+    "fields": {
+      "id": "ID!",
+      "name": "String!",
+      "description": {
+        "directives": {
+          "aws_whatever": true,
+          "aws_other": true
+        },
+        "type": "String!"
+      },
+      "createdAt": "String!",
+      "statics": {
+        "directives": {
+          "resolver": {
+            "dataSource": "mmReqStatics"
+          }
+        },
+        "type": "Statistic",
+        "mappingTemplate": {
+          "dataSource": "mmReqStatics",
+          "type": "Req",
+          "field": "statics",
+          "request": "staticsRequestTemplate.json",
+          "response": "defaultResponseTemplate.json"
+        }
+      },
+      "updatedAt": "String!"
+    }
+  },
+  "Statistic": {
+    "fields": {
+      "id": "ID!",
+      "reqId": "ID!",
+      "count": "Int!",
+      "createdAt": "String!",
+      "updatedAt": "String!"
+    }
+  }
+}
