@@ -1,0 +1,31 @@
+mappingTemplates:
+  - dataSource: mmReqActionLambdaDataSource
+    type: Query
+    field: getMyReqs
+    request: "getMyReqsRequestTemplate.json"
+    response: "defaultResponseTemplate.json"
+  - dataSource: mmReqActionLambdaDataSource
+    type: Query
+    field: getMyReqsAdminFiltered
+    request: "getMyReqsAdminFilteredRequestTemplate.json"
+    response: "defaultResponseTemplate.json"
+  - dataSource: mmReqActionLambdaDataSource
+    type: Query
+    field: filterMyReqs
+    request: "filterMyReqsRequestTemplate.json"
+    response: "defaultResponseTemplate.json"
+  - dataSource: mmReqActionLambdaDataSource
+    type: Query
+    field: getReq
+    request: "getReqRequestTemplate.json"
+    response: "defaultResponseTemplate.json"
+  - dataSource: mmReqActionLambdaDataSource
+    type: Query
+    field: getTenantReqs
+    request: "getTenantReqsRequestTemplate.json"
+    response: "defaultResponseTemplate.json"
+  - dataSource: mmReqActionLambdaDataSource
+    type: Mutation
+    field: addReq
+    request: "addReqRequestTemplate.json"
+    response: "defaultResponseTemplate.json"

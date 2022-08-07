@@ -1,71 +1,120 @@
 {
-  "Query": {
+  "Req": {
     "fields": {
-      "hi": "Req",
-      "hello": {
+      "id": {
+        "type": {
+          "type": "String!",
+          "isArray": true,
+          "required": true,
+          "emptyArrayAllowed": false,
+          "raw": "[String!]!"
+        },
+        "args": {
+          "ID!\n  name": "[String]\n  description",
+          "contactNumber": "String",
+          "agentNumber": "String"
+        },
         "directives": {
-          "test": {
-            "requires": "test",
-            "other": "test"
+          "resolver": {
+            "dataSource": " \"mmReqStatics\""
           }
         },
-        "type": "Req",
-        "args": {
-          "id": "ID!"
-        }
-      },
-      "getReq": "Req",
-      "otherReq": {
-        "directives": {
-          "test": {
-            "requires": "test",
-            "other": "test"
-          }
-        },
-        "type": "Req",
-        "args": {
-          "id": "ID!"
+        "mappingTemplate": {
+          "dataSource": " \"mmReqStatics\"",
+          "type": "Req",
+          "field": "id",
+          "request": "idRequestTemplate.json",
+          "response": "defaultResponseTemplate.json"
         }
       }
     }
   },
-  "Req": {
+  "Subscription": {
     "fields": {
-      "id": "ID!",
-      "name": "String!",
-      "description": {
-        "directives": {
-          "aws_whatever": true,
-          "aws_other": true
+      "updatedLiveCounter": {
+        "type": {
+          "type": "messageLogUpdatedResponse",
+          "isArray": false,
+          "required": false,
+          "raw": "messageLogUpdatedResponse"
         },
-        "type": "String!"
-      },
-      "createdAt": "String!",
-      "statics": {
+        "args": {
+          "String @aws_subscribemutations": "[\"setLiveCounter\"])\n  updatedMessageLog(userId",
+          "contactNumber": "String",
+          "agentNumber": "String"
+        },
         "directives": {
-          "resolver": {
-            "dataSource": "mmReqStatics"
+          "aws_subscribe": {
+            "mutations": " [\"messageLogUpdated\"]"
           }
-        },
-        "type": "Statistic",
-        "mappingTemplate": {
-          "dataSource": "mmReqStatics",
-          "type": "Req",
-          "field": "statics",
-          "request": "staticsRequestTemplate.json",
-          "response": "defaultResponseTemplate.json"
         }
       },
-      "updatedAt": "String!"
-    }
-  },
-  "Statistic": {
-    "fields": {
-      "id": "ID!",
-      "reqId": "ID!",
-      "count": "Int!",
-      "createdAt": "String!",
-      "updatedAt": "String!"
+      "updatedAgentMessageLog": {
+        "type": {
+          "type": "messageLogUpdatedResponse",
+          "isArray": false,
+          "required": false,
+          "raw": "messageLogUpdatedResponse"
+        },
+        "args": {
+          "userId": "String!",
+          "agentNumber": "String"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": " [\"messageLogUpdated\"]"
+          }
+        }
+      },
+      "callForwardingNumber": {
+        "type": {
+          "type": "String",
+          "isArray": false,
+          "required": false,
+          "raw": "String"
+        },
+        "args": {
+          "smsNumber": "String!",
+          "userNumber": "String!"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": " [\"callForwarding\"]"
+          }
+        }
+      },
+      "updatedUsernameLogIn": {
+        "type": {
+          "type": "AutoLogOutUserResponse",
+          "isArray": false,
+          "required": false,
+          "raw": "AutoLogOutUserResponse"
+        },
+        "args": {
+          "userName": "String!"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": " [\"autoLogOutUser\"]"
+          }
+        }
+      },
+      "updatedUserDeviceLogIn": {
+        "type": {
+          "type": "AutoLogOutUserResponse",
+          "isArray": false,
+          "required": false,
+          "raw": "AutoLogOutUserResponse"
+        },
+        "args": {
+          "deviceKey": "String!"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": " [\"autoLogOutUser\"]"
+          }
+        }
+      }
     }
   }
 }

@@ -1,0 +1,2487 @@
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Subscription {
+  updatedLiveCounter: String @aws_subscribe(mutations: ["setLiveCounter"])
+  updatedMessageLog(userId: String!, contactNumber: String, agentNumber: String): messageLogUpdatedResponse
+    @aws_subscribe(mutations: ["messageLogUpdated"])
+  updatedAgentMessageLog(userId: String!, agentNumber: String): messageLogUpdatedResponse
+    @aws_subscribe(mutations: ["messageLogUpdated"])
+  callForwardingNumber(smsNumber: String!, userNumber: String!): String @aws_subscribe(mutations: ["callForwarding"])
+  updatedUsernameLogIn(userName: String!): AutoLogOutUserResponse @aws_subscribe(mutations: ["autoLogOutUser"])
+  updatedUserDeviceLogIn(deviceKey: String!): AutoLogOutUserResponse @aws_subscribe(mutations: ["autoLogOutUser"])
+}
+
+type Query {
+  getMyReqs(reqFilter: ReqFilter, userId: String, tenantId: String): [UserReq!]!
+  getMyReqsAdminFiltered(tenantId: String, reqFilter: ReqFilter): [UserReq!]!
+  filterMyReqs(page: Page, filters: ReqFilter, sortOption: SortOption): FilterReqsResult!
+  getMyContacts(contactIds: [String]): [UserContact!]!
+  filterMyContacts(
+    page: Page
+    filters: ContactFilter
+    sortOption: SortOption
+    fuzziness: [String]
+  ): FilterContactsResult!
+  filterUserContacts(
+    page: Page
+    filters: [QueryStringContactFilter]
+    sortOption: [NewSortOption]
+    index: String
+    reqStatus: String
+    showDeletedContactsOnly: Boolean
+  ): FilterContactsResult!
+  searchMyData(searchKey: String): SearchResult!
+  getContact(contactId: String): Contact!
+  getContactBusiness(contactId: String): [ContactBusiness]!
+  getContactUsers(contactId: String): [User]
+  getContactReqs(contactId: String!): [ContactRequisition!]!
+  getContactDocuments(contactId: String!, reqId: String): [ContactDocument!]!
+  getContactDocumentUrl(contactId: String!, documentId: String!, reqId: String): ContactDocumentUrl!
+  getContactAvatarUrl(contactId: String!): ContactAvatarUrl!
+  getUserAvatarUrl(userId: String!): ContactAvatarUrl!
+  filterReqContacts(
+    reqIds: [String]
+    page: Page
+    filters: ReqContactFilter
+    sortOption: SortOption
+  ): FilterReqContactsResult!
+  getMyTenants: [Tenant!]!
+  filterMyTodos(page: Page, filters: ActivityCriteria, sortOption: SortOption): ActivityResponse!
+  filterAllTodos(page: Page, filters: ActivityCriteria, sortOption: SortOption): ActivityResponse!
+  getUserMentions(userId: String): [History]!
+  getReq(reqId: String): Requisition
+  getUserContactSavedFilters: [UserContactSearchFilter]
+  getReqContactSavedFilters(reqId: String): [ReqContactSearchFilter]
+  getReqContacts(reqId: String): [ReqContact]
+  changeReqContactTouchedStatus(reqId: String, contactId: String): ReqContact
+  getTenantReqs(tenantId: String): [Requisition]
+  filterMyActivityHistory(page: Page, filters: ActivityCriteria, sortOption: SortOption): HistoryResponse!
+  filterAllActivityHistory(page: Page, filters: ActivityCriteria, sortOption: SortOption): HistoryResponse!
+  getReqUsers(reqId: String, prodStartDate: String, prodEndDate: String): [User]!
+  getTenant(tenantId: String!, prodStartDate: String, prodEndDate: String): Tenant!
+  getContactPersonalInfo(contactId: String!): PersonalInfo!
+  getContactImportStatus(uploadId: String!): ContactImportStatus!
+  getLeadsResults(leadExecutionId: String!, cursor: String): LeadsSearchResults!
+  getUserReqs(userId: String!): [UserReq]!
+  getUserInfo(userId: String!): User!
+  getTodo(todoId: String!): Todo
+  listPlaybookTemplates(tenantId: String, playbookTemplateFilter: String): [PlaybookTemplate!]!
+  readPlaybookTemplate(tenantId: String, playbookTemplateId: String!): PlaybookTemplate
+  readSinglePlaybookReqContact(
+    tenantId: String
+    reqId: String
+    contactId: String
+    playbookTemplateId: String
+  ): PlaybookReqContact
+  readPlaybookTemplateReqLinkByReq(tenantId: String, reqId: String, useTopDefault: Boolean): PlaybookTemplateReqLink
+  listPlaybookTemplateReqLinks(playbookTemplateReqLinksFilter: String): [PlaybookTemplateReqLink]!
+  listContactTags(tenantId: String, contactTagFilter: String, reqId: String): [ContactTag!]!
+  readContactTag(tenantId: String, contactTagId: String!, reqId: String): ContactTag
+  getUserTodos(userId: String!): [Todo!]!
+  listDuplicateContacts(contactId: String!): [ContactTableResults]!
+  getNmlsValidation(executionId: String!): NmlsValidationResult!
+  getReqContactTags(reqId: String, contactId: String!): [ContactTag!]!
+  readIntegrationKey(iName: String!): IntegrationKey!
+  validateCallerId(agentNumber: String!): Boolean!
+  verifyCallerId(agentNumber: String!, agentInfo: String!): VerifyCallerIdResult!
+  getFeatureClick2Call(tenantId: String!): Boolean!
+  getCallStatus(callServiceId: String!): String!
+  getReportingCounts(
+    index: [String]!
+    page: Page
+    aggregation: String
+    aggs: String
+    sort: String
+    size: String
+    dateTarget: String!
+    startDate: String!
+    endDate: String!
+    reqIds: [String]
+    userIds: [String]
+    esFilters: [ESFilterInput]
+    filters: String
+  ): String!
+  getFeatureByName(feature: String!, tenantId: String!): Boolean!
+  getFeatureByNameForUser(
+    feature: String!
+    userId: String!
+    tenantId: String
+    companySettingsFeature: Boolean
+  ): Boolean!
+  listReportingTemplates(reportingTemplateFilter: String, tenantId: String): String!
+  readReportingTemplate(reportingTemplateId: String!, tenantId: String, systemTarget: String): String
+  readUserSettingKey(iName: String!): UserSettingKey!
+  listReportObjects(ReportObjectFilter: String, tenantId: String): String!
+  readReportObject(ReportObjectId: String!, tenantId: String, systemTarget: String): String
+  readReportingSnapshot(input: ReadReportingSnapshotInput!): ReportingSnapshot! @aws_cognito_user_pools @aws_api_key
+  getReqFiltersUsers(reqIds: [String]!): [User]!
+  listBonzoCampaigns(iAPIKeyBONZO: String!): String!
+  proxyGet(url: String!, headers: String): String!
+  isZapAuthenticated(userId: String): Zapier!
+  readSystemKey(iName: String!): SystemKey!
+  getCurrentOAuthToken(iName: String!, basicAuth: Boolean): String!
+  listAvailableNumbers(total: String, npa: String, npx: String): String!
+  readNumber(number: String!): String!
+  listMessageConversationalHistory(to: String!, from: String!, size: String, start: String, direction: String): String!
+  getMMSMedia(mmsMediaDocId: String): [MMSMedia!]!
+  getMMSMediaUrl(mmsMediaDocId: String!, thumb: String!): String!
+  getLiveCounter(placeholder: String): String!
+  searchMessageConversationalHistory(
+    searchPhrase: String
+    businessAddress: String!
+    conversationAddress: String
+    size: String
+    start: String
+    direction: String
+  ): String!
+  listConversations(
+    assignedNumber: String!
+    size: String
+    start: String
+    direction: Boolean
+    active: Boolean
+    filter: String
+  ): listMessageConversationResult
+  trainingGetUserInfo(placeHolder: String): trainingUserInfo
+  getUserImportHistory(userId: String!): [ImportDoc]
+  getContactImportDownloadURL(fileName: String!): ContactDocumentUrl
+  getEnrichmentSuggestions(form: String!, contactId: String!, reqId: String!): [Suggestion]
+  getContactFromUserContacts(phoneNumber: String!): [ContactNameFragment!]
+  getBonzoWebhookDoc(webhookCode: String!): BonzoWebhookDoc
+  # searchLocation(inputStr: String!, filters: String!): MarketSearchResponse!
+  # searchBranches(coords: GeoCodeInput, filters: String!): MarketSearchResponse!
+  getUserMetrics(userId: String!): UserMetric
+  getReqContact(contactId: String!, reqId: String!): ReqContact
+  uploadContactResume(userId: String!): uploadResumeResponse!
+  getResumeInfo(resumeKey: String!): getResumeInfoResponse!
+  validateNmlsId(nmlsId: String!, since: String): NmlsIdValidationResult!
+  listSequences(sequenceFilter: String, tenantId: String): String!
+  readSequence(sequenceId: String!, tenantId: String, systemTarget: String): String
+  # getCompanySuggestions(text: String!): [String]!
+  # searchCompany(text: String!, filters: String!): [CompanyInfo]!
+  # searchIndividuals(text: String!, filters: String!): SearchIndividualsResponse!
+  # getBranchDetails(branchID: String!, companyID: String!): BranchDetailsResponse!
+  # getBranchesWithOptions(companyID: String!, options: BranchTableOptionsInput): BranchesWithOptions
+  # getLeadsInfo(leads: [String]!): [Lead]
+  # getLeadsInfoWithOptions(locations: [String]!, options: TeamTableOptionsInput): LeadsInfoWithOptions
+  # checkPipelineDupes(leads: [DupeLeadInput]!, tenantId: String!): LeadDuplicatesResponse!
+  listSequenceQueue(sequenceQueueFilter: String): [SequenceQueue]
+  readSequenceQueue(sequenceQueueKey: String!): SequenceQueue
+  searchSequenceQueue(sequenceQueueKey: String): [SequenceQueue]
+  checkPhoneNumberType(phoneNumber: String): String
+  getCreditProfile(tenantId: String!): CreditProfile
+  getCreditUsage(tenantId: String!): String
+  # buildCompanyVolumeReport(companyNMLSID: String!): VolumeReport
+  # buildBranchVolumeReport(branchNMLSID: String!): VolumeReport
+  # buildOriginatorVolumeReport(nmlsId: String!): VolumeReport
+  # searchNMLSID(nmlsId: String!): CompanyInfo
+  getAllEmailTemplates: [EmailTemplate]
+  getEmailSignature: EmailSignature
+  listSMSTemplates(smsTemplateFilter: String, tenantId: String): String!
+  readSMSTemplate(smsTemplateId: String!, tenantId: String, systemTarget: String): String
+  getContactVolumeReport(contactId: String!): FullVolumeReport
+  readSequenceLockTable(threadId: String): String!
+  filterEmailTemplates(templateTitle: String): [EmailTemplate]
+  listGroupsForUser(userNames: [String]!): [CognitoGroups]
+  getTotalSentSequenceSummary(sequenceID: String!): [SequenceSummary]
+  getOptOutSequenceSummary(sequenceID: String!): [SequenceSummary]
+  getSMSDeliveryTotals(userID: String, sequenceID: String): SMSDeliveryTotal
+  #####################################################
+  # Master Contact Entity (MCE) Queries Section
+  mceSanityCheck(userId: String): Boolean!
+  mceFilterContacts(
+    page: Page
+    filters: [QueryStringContactFilter]
+    sortOption: [NewSortOption]
+    index: String
+  ): FilterContactsResult!
+  #####################################################
+  getContactActive(contactId: String!): UserContactActive!
+}
+
+type Mutation {
+  addReq(
+    title: String!
+    summary: String
+    tenantId: ID!
+    ownerId: String!
+    ownerFirst: String!
+    ownerLast: String!
+    openedDate: String
+    address: String
+    assignedUsers: [String]
+  ): UserReq
+  addTodo(input: AddTodoInput!): Todo
+  completeTodo(todoId: String!, disposition: String): History
+  checkUserMention(historyId: String!): Boolean!
+  addContact(contact: ContactInput!): UserContact!
+  addUserContactSearchFilter(searchFilter: UserContactSearchFilterInput!): UserContactSearchFilter!
+  addReqContactSearchFilter(searchFilter: ReqContactSearchFilterInput!): ReqContactSearchFilter!
+  uploadContactDocument(
+    fileName: String!
+    fileType: String!
+    contactId: String!
+    reqId: String
+    documentId: String
+  ): ContactDocument!
+  uploadContactAvatar(fileName: String!, fileType: String!, contactId: String!): ContactAvatarUpload!
+  uploadUserAvatar(fileName: String!, fileType: String!, userId: String!): ContactAvatarUpload!
+  deleteContactDocument(contactId: String!, documentId: String!, reqId: String): Boolean
+  updateUserContactSearchFilter(
+    id: String!
+    filterCriteria: [QueryStringRawContactFilterInput]!
+  ): UserContactSearchFilter!
+  deleteUserContactSearchFilter(id: String!): Boolean
+  updateReqContactSearchFilter(
+    id: String!
+    reqId: String!
+    filterCriteria: [QueryStringRawContactFilterInput]!
+  ): ReqContactSearchFilter!
+  deleteReqContactSearchFilter(id: String!, reqId: String!): Boolean
+  shareUserContactSearchFilter(
+    userIds: [String]
+    searchFilter: UserContactSearchFilterInput!
+  ): [UserContactSearchFilter]!
+  shareReqContactSearchFilter(userIds: [String], searchFilter: ReqContactSearchFilterInput!): [ReqContactSearchFilter]!
+  addContactsToReqs(contactIds: [String], reqIds: [String]): [ContactRequisition!]!
+  shareContactToUser(contactId: String, userId: String): UserContact!
+  removeUserFromReq(userId: String, reqId: String): Boolean!
+  addUserToReq(userId: String!, reqId: String!): User!
+  updateContactPersonalInfo(contactId: String!, info: PersonalInfoInput!): PersonalInfo!
+  updateReqContact(input: ReqContactInput, userId: String): ReqContact!
+  initContactImport(options: ContactImportOptionsInput!, fileType: String!): PresignedS3Upload!
+  initContactExport(contactIds: [String]): Boolean!
+  addNote(input: NoteInput!): History!
+  addTenant(input: TenantInput!): Tenant!
+  addUser(input: AddUserInput!): User!
+  resendUserCode(input: ResendUserCodeInput!): String!
+  updateTodo(input: UpdateTodoInput!): Todo!
+  updateContact(contactId: String!, input: ContactInput!): Contact!
+  updateContactBusiness(contactId: String!, input: ContactBusinessInput!, isMerge: Boolean!): ContactBusiness!
+  createLeadsSearch(leadsCriteria: LeadsCriteria!): LeadsSearchResults!
+  updateLeadMetadata(nmlsId: String!, lead: UpdateLeadInput!): Lead!
+  importLeads(import: ImportLeadInput!): Boolean!
+  updateUserInfo(userId: String!, userInput: UpdateUserInfoInput!): User!
+  updateReq(reqId: String!, input: UpdateReqInput!): Requisition!
+  updateReqOwner(reqId: String!, ownerId: String!, firstName: String!, lastName: String!): Boolean!
+  bulkUpdateReqContacts(
+    reqId: String!
+    filters: ContactFilter
+    tags: [ContactTagInput]
+    assignedUser: UserInput
+  ): ContactsUpdated!
+  addPlaybookTemplate(tenantId: String, playbookTemplateData: PlaybookTemplateInput!): PlaybookTemplate!
+  updatePlaybookTemplate(
+    tenantId: String
+    playbookTemplateId: String!
+    playbookTemplateData: PlaybookTemplateInput!
+  ): PlaybookTemplate!
+  logicalDeletePlaybookTemplate(tenantId: String, playbookTemplateId: String!): Boolean!
+  createPlaybookReqContact(reqId: String, contactId: String, playbookTemplateId: String): PlaybookReqContact
+  updatePlaybookReqContact(
+    reqId: String
+    contactId: String
+    playbookTemplateId: String
+    playbookReqContactData: PlaybookReqContactInput!
+  ): PlaybookReqContact!
+  createPlaybookTemplateReqLink(tenantId: String, reqId: String, playbookTemplateId: String): PlaybookTemplateReqLink
+  updatePlaybookTemplateReqLink(
+    reqId: String
+    playbookTemplateId: String
+    playbookTemplateReqLinkData: PlaybookTemplateReqLinkInput
+  ): PlaybookTemplateReqLink
+  deletePlaybookTemplateReqLink(reqId: String!): Boolean!
+  createContactTag(tenantId: String, contactTagData: ContactTagInput!, reqId: String, userId: String): ContactTag!
+  updateContactTag(
+    tenantId: String
+    contactTagId: String!
+    contactTagData: ContactTagInput!
+    reqId: String
+  ): ContactTag!
+  deleteContactTag(tenantId: String, contactTagId: String!, reqId: String): Boolean!
+  disableUser(tenantId: String, userId: String!, userName: String!): User!
+  enableUser(tenantId: String, userId: String!, userName: String!): User!
+  reAssignTodos(oldUserId: String!, newUserId: String!): Boolean!
+  deleteContact(contactId: String!): Boolean!
+  deleteContactFromReq(contactId: String!, reqId: String!): Boolean!
+  createStripePaymentIntentForLead(metadata: StripePaymentIntentLeadMetadata!): StripePaymentIntent!
+  cancelStripePaymentIntent(id: ID!, cancellation_reason: StripePaymentIntentCancellationReason): StripePaymentIntent!
+  createNmlsValidation(nmlsId: String!): NmlsValidationResult!
+  importLeadInsight(nmlsId: String!, contactId: String!): Boolean
+  updateReqContactTags(
+    reqId: String
+    contactId: String!
+    contactTagData: [ContactTagInput]!
+    userId: String
+    tenantId: String
+  ): Boolean!
+  setIntegrationKey(iName: String!, apiKey: String!): IntegrationKey!
+  deleteIntegrationKey(iName: String!): Boolean!
+  startClick2Call(agentNumber: String!, contactNumber: String!): Click2CallResult!
+  setFeatureClick2Call(tenantId: String!, setVal: Boolean!): Boolean!
+  addHistory(input: HistoryInput!): History!
+  setFeatureByName(feature: String!, tenantId: String!, setVal: Boolean!): Boolean!
+  setFeatureByNameForUser(feature: String!, userId: String!, setVal: Boolean!): Boolean!
+  createReportingTemplate(reportingTemplateData: String!, tenantId: String, systemTarget: String): String!
+  updateReportingTemplate(reportingTemplateData: String!, tenantId: String, systemTarget: String): String!
+  logicalDeleteReportingTemplate(reportingTemplateId: String!, tenantId: String, systemTarget: String): Boolean!
+  setUserSettingKey(iName: String!, settingValue: String!): UserSettingKey!
+  deleteUserSettingKey(iName: String!): Boolean!
+  terminateCall(callServiceId: String!): String!
+  transferCall(callServiceId: String!, transferPhone: String!): String!
+  createReportObject(ReportObjectData: String!, tenantId: String, systemTarget: String): String!
+  updateReportObject(ReportObjectData: String!, tenantId: String, systemTarget: String): String!
+  logicalDeleteReportObject(ReportObjectId: String!, tenantId: String, systemTarget: String): Boolean!
+  createReportingSnapshot(input: CreateReportingSnapshotInput!): ReportingSnapshot!
+  updateReportingSnapshot(input: UpdateReportingSnapshotInput!): ReportingSnapshot!
+  deleteReportingSnapshot(id: ID!): ID!
+  shareReportingSnapshot(input: ShareReportingSnapshotInput!): ReportingSnapshot!
+  shareReportTemplateToUser(reportTemplateId: String, userId: String): String!
+  addProspectBonzoCampaign(iAPIKeyBONZO: String!, bonzoCampaignId: String, bonzoContactData: String): String!
+  proxyPost(url: String!, headers: String, body: String, parseBody: Boolean): String!
+  configureZaps(zaps: [ZapInput]): Zapier!
+  disconnectZapier(userId: String): Zapier!
+  setSystemKey(iName: String!, sysKey: String!): SystemKey!
+  deleteSystemKey(iName: String!): Boolean!
+  sendEmail(emailObj: EmailInputTwo!): Boolean!
+  provisionNumber(number: String!): String!
+  removeNumber(number: String!, numberSid: String!): String!
+  sendSMS(
+    to: String!
+    from: String!
+    body: String
+    contact: ContactInput
+    controlPoint: String
+    position: String
+    sessionId: String
+    arrMMSMedia: [MMSMediaInput]
+    reqId: String
+    tenantId: String
+    sequenceId: String
+  ): String!
+  buildMMSMediaStorageLocation(fileName: String!, fileType: String!, mmsMediaDocId: String): MMSMedia!
+  deleteMMSMedia(mmsMediaDocId: String!): Boolean
+  setLiveCounter(newValue: String!): String
+  # "***Careful: This mutation could be hit by anyone who has the API Key"
+  messageLogUpdated(
+    userId: String!
+    contactNumber: String
+    agentNumber: String!
+    data: String!
+  ): messageLogUpdatedResponse @aws_cognito_user_pools @aws_api_key
+  resizeMMSMediaImages(mmsMediaDoc: MMSMediaInput!): Boolean!
+  deactivateConversation(number: String!): Boolean!
+  setConversationActive(number: String!, contact: ContactInput): Boolean!
+  createBonzoWebhook(apiKey: String!, webhookCode: String!): Boolean!
+  updatePipeflowSettings(webhookCode: String!, pipeflowSettings: PipeflowSettingsInput!): Boolean!
+  changeContactDripCampaign(
+    apiKey: String!
+    webhookCode: String!
+    campaignID: String!
+    contactData: String!
+  ): DripCampaignChangeResponse
+  updateUserMetric(type: String!, count: Int!): Boolean!
+  updateMessageRead(agentNumber: String!, contactNumber: String!): Boolean!
+  updateMessageChainDeleted(agentNumber: String!, contactNumber: String!): Boolean!
+  setUserNotificationsKey(subscription: String!): Boolean!
+  deleteUserNotificationsKey(subscription: String!): Boolean!
+  isUserNotificationsKeySet(subscription: String!): Boolean!
+  updateReqContacts(reqContacts: String!, assignedUser: UserInput, reqId: String!): Int!
+  generateVolumeReport(contactId: String!, nmlsId: String!): [ContactBusiness]
+  generateFullVolumeReport(contactId: String!, nmlsId: String!, updateContactRecord: Boolean): FullVolumeReport!
+  createSequence(sequenceData: String!, tenantId: String, systemTarget: String): String!
+  updateSequence(sequenceData: String!, tenantId: String, systemTarget: String): String!
+  logicalDeleteSequence(sequenceId: String!, tenantId: String, systemTarget: String): Boolean!
+  createNotification(userId: String!, type: String!, data: String!): Boolean!
+  createSequenceQueue(sequenceQueueData: SequenceQueueInput!): SequenceQueue!
+  updateSequenceQueue(sequenceQueueData: SequenceQueueInput!): SequenceQueue!
+  deleteSequenceQueue(sequenceQueueKey: String!): Boolean!
+  createCreditProfile(tenantId: String!): CreditProfile
+  updateCreditProfile(tenantId: String!, fields: String!): Boolean!
+  updateUsageMetrics(tenantId: String!, user: UserInput!, usage: CreditUsageInput!): Boolean!
+  moSequenceCheck(consumer: String!, agent: String!): Boolean!
+  stopRequestProcessing(consumer: String!, agent: String!): Boolean!
+  addEmailTemplate(templateTitle: String!, templateBody: String!): EmailTemplate!
+  updateEmailTemplate(templateId: String!, templateTitle: String!, templateBody: String!): Boolean!
+  deleteEmailTemplate(templateId: String!): Boolean!
+  addContactToPipelineFromChrome(contactInfo: ContactInput!): UserContact
+  addEmailSignature(signature: String!): Boolean!
+  createSMSTemplate(smsTemplateData: String!, tenantId: String, systemTarget: String): String!
+  updateSMSTemplate(smsTemplateData: String!, tenantId: String, systemTarget: String): String!
+  logicalDeleteSMSTemplate(smsTemplateId: String!, tenantId: String, systemTarget: String): Boolean!
+  createSequenceQueueTestData(sequenceQueueData: SequenceQueueInput!, howMany: Int!, target: String!): String!
+  setCallForwardingNumber(smsNumber: String!, userNumber: String!): String!
+  callForwarding(smsNumber: String!, userNumber: String!): String @aws_cognito_user_pools @aws_api_key
+  updateContactLastUpdatedAtField(contactId: String!, reqId: String, isPublic: String!): Boolean
+  addUserToGroup(userName: String!, groupName: String!): Boolean!
+  removeUserFromGroup(userName: String!, groupName: String!): Boolean!
+  autoLogOutUser(userName: String, data: String!, deviceKey: String): AutoLogOutUserResponse
+    @aws_cognito_user_pools
+    @aws_api_key
+  enableDeviceRememberingForOldUser(userName: String!): Boolean!
+  notifyUserDeviceBeforeLogOut(deviceKey: String): Boolean!
+  notifyUsernameBeforeLogOut(userName: String!, userID: String!): Boolean!
+
+  #####################################################
+  # Master Contact Entity (MCE) Mutations Section
+  addContactMCE(contact: ContactInput!): UserContact!
+  addMCEToTenant(contact: ContactInput!, tenantId: String, mceId: String!): String!
+  addMCEToUser(contact: ContactInput!, userId: String, mceId: String!): String!
+  addMCEToReq(contact: ContactInput!, reqId: String!, mceId: String!): String!
+  #####################################################
+
+  #####################################################
+  # Extract Transform and Load (ETL) Mutations Section
+  weeklyTWGProcessing(numberToProcess: Int, sort: String): String
+  leadsBuilder(numberToProcess: Int, sort: String): String
+  #####################################################
+}
+
+type AnnualVolumeReport {
+  period: String
+  endDate: String
+  startDate: String
+  endMonth: Int
+  endYear: Int
+  volume: Float
+  totalUnits: Int
+  avgPerUnit: Int
+  purchasePercentage: Int
+  productMix: ProductMix
+  transactionMix: TransactionMix
+  loanTypes: LoanTypes
+  topStates: [TopState]
+  topLenders: [TopState]
+  topOriginators: [TopState]
+  topCities: [TopState]
+  monthly: [MonthlyReport]
+  weekly: [WeeklyReport]
+}
+
+type FullVolumeReport {
+  lastUpdatedAt: String
+  createdAt: String
+  nmlsId: String
+  report: [AnnualVolumeReport]
+}
+
+type DripCampaignChangeResponse {
+  success: Boolean!
+  createdNew: Boolean!
+  message: String!
+}
+
+input ZapInput {
+  url: String!
+  key: String!
+}
+
+type Zapier {
+  status: String
+  userId: String
+  url: String
+  isAuthenticated: Boolean
+}
+
+type Tenant {
+  id: ID!
+  title: String!
+  created: String
+  lastUpdated: String
+  active: Boolean!
+  user: [User]!
+}
+
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  emails: [Email]!
+  created: String
+  active: Boolean!
+  username: String
+  tenantId: String
+  productivity: UserAggs
+  notifications: Boolean
+  agentPhone: String
+  smsPhone: String
+  smsNotify: Boolean
+  deviceRemembered: Boolean
+}
+
+type UserAggs {
+  meetingsScheduled: Int
+  meetingsCompleted: Int
+  notesAdded: Int
+  todosCompleted: Int
+  todosOpened: Int
+}
+
+type Requisition {
+  id: ID!
+  title: String!
+  created: String!
+  lastUpdated: String
+  address: String
+  ownerId: String
+  ownerFirst: String
+  ownerLast: String
+  targetHires: Int
+  statistics: Statistic
+  summary: String
+  status: Status
+  openedDate: String
+  todos: [Todo]
+  tenantId: String
+  stage: ContactStage!
+}
+
+type UserReq {
+  id: ID!
+  title: String!
+  created: String
+  active: Boolean!
+  targetHires: Int
+  ownerId: String
+  ownerFirst: String
+  ownerLast: String
+  tenant: String
+  status: Status
+  todos: [Todo]
+  statistics: Statistic
+  reqId: String!
+  mmAdminOnlyReqId: String
+}
+
+type Contact {
+  id: ID!
+  leadsIndex: String
+  firstName: String!
+  lastName: String!
+  createdAt: String!
+  active: Boolean!
+  disabledAt: String
+  nmlsId: String
+  title: String
+  company: String
+  address: Address!
+  emails: [Email]!
+  phones: [Phone]!
+  links: [Link]!
+  ownerId: String!
+  lastUpdatedAt: String!
+  linkedIn: String
+  facebook: String
+  website: String
+  emailDripEnabled: Boolean
+  personalInfo: PersonalInfo!
+  statistics: [ContactBusiness]
+  production: [ContactBusiness]
+  tags: [ContactTag]!
+  tenantId: String
+  avatarId: String
+  twilioLookedUp: Boolean
+}
+
+type ContactNameFragment {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  active: Boolean
+  stage: ContactStage
+  linkedIn: String
+  facebook: String
+  website: String
+  avatarId: String
+  title: String
+  company: String
+  nmlsId: String
+}
+
+type ContactBusiness {
+  volume: Float
+  avgPerUnit: Int
+  totalUnits: Int
+  purchasePercentage: Int
+  period: String
+  peroid: String
+  productMix: ProductMix
+  loanTypes: [LoanTypeStats]
+  topCities: [TopCity]
+  topLenders: [TopCity]
+  transactionMix: TransactionMix
+  endMonth: Int
+  endYear: Int
+  startMonth: Int
+  startYear: Int
+  isUserInput: Boolean
+  isUserImport: Boolean
+}
+
+type LoanTypeStats {
+  key: String
+  volume: Int
+  avgPerUnit: Int
+  totalUnits: Int
+}
+
+type TopCity {
+  name: String
+  count: Int
+  volume: Int
+}
+
+enum NmlsIdValidationResult {
+  valid
+  invalid
+  no_production
+}
+
+type ContactDocument {
+  id: String!
+  documentName: String!
+  lastUpdatedAt: String!
+  ownerId: String!
+  contactId: String!
+  reqId: String!
+  uploadUrl: String!
+  createdAt: String!
+}
+
+type MMSMedia {
+  id: String!
+  documentName: String!
+  lastUpdatedAt: String!
+  ownerId: String!
+  uploadUrl: String
+  createdAt: String!
+  url: String
+  thumbUrl: String
+  fileType: String
+}
+
+input MMSMediaInput {
+  id: String!
+  documentName: String!
+  lastUpdatedAt: String!
+  ownerId: String!
+  uploadUrl: String
+  createdAt: String!
+  url: String
+  thumbUrl: String
+  fileType: String
+}
+
+type ContactAvatarUpload {
+  uploadUrl: String!
+}
+
+type ContactDocumentUrl {
+  id: String!
+  url: String!
+}
+
+type ContactAvatarUrl {
+  id: String
+  url: String
+}
+
+type ContactsUpdated {
+  contactsUpdated: Int
+}
+
+# type ProductMix {
+#   conventional: Int
+#   government: Int
+#   nonConforming: Int
+#   other: Int
+# }
+
+type PersonalInfo {
+  details: String
+  birthdate: String
+  spouse: String
+  kids: String
+  anniversary: String
+  education: String
+  hobbies: String
+}
+
+type ReqContact {
+  id: ID!
+  nmlsId: String
+  reqId: String
+  reqName: String
+  title: String
+  firstName: String!
+  lastName: String!
+  sourceId: String!
+  source: String!
+  stage: ContactStage!
+  stageEnteredDate: String
+  score: Float!
+  contacted: Boolean
+  lastUpdatedAt: String!
+  createdAt: String!
+  company: String
+  contactId: String!
+  tags: [ContactTag]!
+  assignedUser: User
+}
+
+type ContactRequisition {
+  contactId: ID
+  requisition: Requisition
+  stage: ContactStage!
+  score: Float
+  assignedUser: User
+}
+
+type Statistic {
+  prospects: Int
+  candidates: Int
+  meetings: Int
+  offers: Int
+  hires: Int
+}
+
+type FilterContactsResult {
+  page: PageType!
+  contacts: [ContactTableResults]!
+}
+
+type SearchResult {
+  contactsByName: [ContactTableResults]!
+  contactsByPhone: [ContactTableResults]!
+  contactsByEmail: [ContactTableResults]!
+  contactsByNmls: [ContactTableResults]!
+  requisitions: [UserReq]!
+  companies: [ContactTableResults]!
+  contactTags: [ContactTableResults]!
+  reqTags: [ReqContactTableResults]!
+}
+
+type FilterReqsResult {
+  page: PageType!
+  userReqs: [UserReq]!
+}
+
+type FilterReqContactsResult {
+  page: PageType!
+  contacts: [ReqContactTableResults]!
+}
+
+type ContactTableResults {
+  firstName: String
+  lastName: String
+  lastUpdatedAt: String
+  active: Boolean
+  createdAt: String
+  company: String
+  address: Address
+  emails: [Email]
+  phones: [Phone]
+  links: [Link]
+  nmlsId: String
+  contactId: ID
+  userId: ID
+  stage: ContactStage
+  stageEnteredDate: String
+  source: String
+  sourceId: String
+  id: ID
+  reqName: String
+  reqId: ID
+  nextAction: Todo
+  assignedUser: User
+  tenantId: String
+  contacted: Boolean
+  statistics: [ContactBusiness]
+  production: [ContactBusiness]
+  title: String
+  tags: [ContactTag]
+}
+
+type ReqContactTableResults {
+  firstName: String
+  lastName: String
+  lastUpdatedAt: String
+  company: String
+  source: String
+  sourceId: String
+  stage: ContactStage
+  stageEnteredDate: String
+  contacted: Boolean
+  address: Address
+  nmlsId: String
+  phones: [Phone]
+  links: [Link]
+  reqId: ID
+  contactId: ID
+  id: ID
+  createdAt: String
+  reqName: String
+  title: String
+  statistics: [ContactBusiness]
+  production: [ContactBusiness]
+  tags: [ContactTag]
+  assignedUser: User
+}
+
+type UserContactActive {
+  id: ID!
+  active: Boolean!
+}
+
+type UserContact {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  middleName: String
+  prefix: String
+  suffix: String
+  createdAt: String!
+  active: Boolean!
+  nmlsId: String
+  company: String
+  emails: [Email]!
+  phones: [Phone]!
+  links: [Link]!
+  address: Address!
+  sourceId: String!
+  source: String!
+  lastUpdatedAt: String!
+  reqs: [Requisition!]
+  tags: [ContactTag]!
+}
+
+type Todo {
+  id: ID!
+  title: String!
+  type: String!
+  description: String
+  created: String
+  lastUpdated: String
+  users: [User]
+  contacts: [ContactNameFragment]
+  todoId: String
+  reqId: String
+  location: String
+  phone: String
+  duration: String
+  createdBy: String!
+  completedBy: String
+  dueOn: String!
+}
+
+type History {
+  id: ID!
+  title: String!
+  type: String!
+  description: String
+  users: [User]
+  contacts: [ContactNameFragment]
+  reqId: String
+  completedBy: User!
+  dueOn: String
+  completedDate: String
+  isPublic: Boolean
+  disposition: String
+  noteId: String
+  userId: String
+  mentionChecked: Boolean
+  requisition: String
+}
+
+type HistoryResponse {
+  page: PageType!
+  histories: [History]!
+  filters: ActivityCriteriaType
+}
+
+type ActivityResponse {
+  count: Int
+  page: PageType!
+  todos: [Todo]!
+  filters: ActivityCriteriaType
+}
+
+type ActivityCriteriaType {
+  title: String
+  description: String
+  type: String
+  participant: String
+  Requisition: String
+  contact: String
+  DueDateStart: String
+  DueDateEnd: String
+  CompeletedDateStart: String
+  CompeletedDateEnd: String
+  CompletedBy: String
+  todoSection: String
+  activity: String
+  stage: String
+}
+
+type PageType {
+  page: Int
+  pageSize: Int
+  totalSize: Int
+}
+
+type Address {
+  street: String
+  street2: String
+  city: String
+  state: String
+  zipCode: String
+}
+
+type Phone {
+  type: String
+  number: String
+}
+
+type Email {
+  type: String
+  address: String
+}
+
+type Link {
+  type: String
+  url: String
+}
+
+type PresignedS3Upload {
+  uploadId: String!
+  presignedUrl: String!
+  method: String!
+}
+
+type ContactImportStatus {
+  uploadId: String!
+  status: String!
+  completed: Boolean!
+  contactsImported: Int!
+  inProgress: Boolean
+  error: String
+}
+
+type LeadsSearchResults {
+  executionId: String!
+  status: String
+  leads: [Lead]
+  cursor: String
+}
+
+type TWGContactInfo {
+  LID: String
+  Status: String
+  Validated: String
+  LOOrgID: String
+  LOOrgName: String
+  Collected_EmployerCOMPANY: String
+  Collected_EmployerCOMPANYID: String
+  Collected_Employer_Type: String
+  Collected_EmployerAddress: String
+  Collected_EmployerCity: String
+  Collected_EmployerState: String
+  Collected_EmployerZip: String
+  Collected_OfficePhone: String
+  Collected_OfficePhoneExt: String
+  Collected_CellPhone: String
+  Collected_WorkEmail: String
+  Collected_PersonalEmail: String
+  Collected_EmployerWebsite: String
+  Collected_LOWebSite: String
+  Collected_Linkedin: String
+  Collected_Twitter: String
+  Collected_Facebook: String
+  Collected_Other: String
+  ModiType: String
+}
+
+type LeadLicense {
+  Status: String
+  StatusDate: String
+  LicenseNumber: String
+  IsAuthorized: String
+  IssueDate: String
+  Regulator: String
+  RenewedThrough: String
+  LicenseID: String
+  LicenseType: String
+}
+
+type UserContactSearchFilter {
+  id: String
+  createdAt: String
+  name: String
+  filterCriteria: [QueryStringRawContactFilter]
+}
+
+type UserContactFilter {
+  name: String
+  lastUpdatedAt: String
+  company: String
+  state: String
+  nmlsId: String
+  city: String
+  mobileSearch: String
+  primaryPhone: String
+  secondaryPhone: String
+  title: String
+  dateCreated: String
+  tags: String
+  dateCreatedStart: String
+  dateCreatedEnd: String
+  lastUpdatedAtStart: String
+  lastUpdatedAtEnd: String
+}
+
+type ReqContactSearchFilter {
+  id: String
+  createdAt: String
+  name: String
+  filterCriteria: [QueryStringRawContactFilter]
+}
+
+type ReqContactFilterCriteria {
+  name: String
+  source: String
+  company: String
+  stage: String
+  score: Float
+  contacted: Boolean
+  lastUpdatedAt: String
+  primaryPhone: String
+  secondaryPhone: String
+  city: String
+  state: String
+  title: String
+  dateCreated: String
+  nmlsId: String
+  tags: String
+  stageEnteredDateStart: String
+  stageEnteredDateEnd: String
+  daysOfStage: String
+  dateCreatedStart: String
+  dateCreatedEnd: String
+  lastUpdatedAtStart: String
+  lastUpdatedAtEnd: String
+}
+
+type PlaybookNote {
+  id: String!
+  content: String
+  by: String
+  createdAt: String
+  createdDate: String
+  modifiedDate: String
+  modifiedAt: String
+}
+
+type PlaybookTask {
+  id: String!
+  color: String
+  title: String
+  desc: String
+  notes: [PlaybookNote!]
+  status: PlaybookItemStatus
+  dueDSE: Int! # days since event entered stage
+  weight: Int! # 0- 100
+  assignedTo: [String]
+}
+
+type PlaybookStage {
+  id: String!
+  tasks: [PlaybookTask!]
+}
+
+type PlaybookCategory {
+  id: String!
+  title: String
+  desc: String
+  stages: [PlaybookStage!]
+}
+
+# Playbook basic object
+type PlaybookTemplate {
+  id: String!
+  title: String
+  desc: String
+  version: [String] # Future think Array of last published dates
+  categories: [PlaybookCategory!]
+  createdBy: String
+  createdDate: String
+  modifiedDate: String
+  tenantId: String!
+  order: Int
+}
+
+# Playbook in action object
+type PlaybookReqContact {
+  id: String!
+  # pkey: String # CONTACT$<contactId>
+  # rkey: String # REQ$<reqId>|PLAYBOOK$<playbookTemplateId>
+  playbookTemplateId: String
+  playbookObj: PlaybookTemplate
+  createdBy: String
+  createdDate: String
+  modifiedDate: String
+}
+
+# Playbook to Req-Contact link object
+type PlaybookTemplateReqLink {
+  id: String!
+  playbookTemplateId: String!
+  reqId: String
+}
+
+# ContactTag
+type ContactTag {
+  tagId: String!
+  name: String
+  reqId: String
+  createdBy: String
+  createdDate: String
+  modifiedDate: String
+  tenantId: String!
+  order: Int
+}
+
+type listMessageConversationResult {
+  Count: Int
+  ScannedCount: Int
+  LastEvaluatedKey: normalKey
+  Items: [ConversationTarget]
+}
+
+type normalKey {
+  pKey: String
+  rKey: String
+}
+
+type ConversationTarget {
+  contactNumber: String
+  created: String
+  contact: ContactNameFragment
+  read: Boolean
+  chainDeleted: Boolean
+  reqId: String
+  avatarURL: String
+}
+
+enum PlaybookItemStatus {
+  open
+  working
+  complete
+}
+
+enum Status {
+  active
+  on_hold
+  cancelled
+  completed
+}
+
+enum PhoneTypes {
+  primary
+  secondary
+  mobile
+  home
+  work
+}
+
+enum EmailTypes {
+  primary
+  secondary
+  personal
+  work
+  other
+  notifications
+}
+
+enum ContactStage {
+  prospects
+  candidates
+  meetings
+  offers
+  hires
+  disqualified
+  not_intrested
+}
+
+enum ContactImportType {
+  personal
+  tenant
+}
+
+input UserInput {
+  id: String
+  firstName: String
+  lastName: String
+  stage: ContactStage
+}
+
+input TWGContactInfoInput {
+  LID: String
+  Status: String
+  Validated: String
+  LOOrgID: String
+  LOOrgName: String
+  Collected_EmployerCOMPANY: String
+  Collected_EmployerCOMPANYID: String
+  Collected_Employer_Type: String
+  Collected_EmployerAddress: String
+  Collected_EmployerCity: String
+  Collected_EmployerState: String
+  Collected_EmployerZip: String
+  Collected_OfficePhone: String
+  Collected_OfficePhoneExt: String
+  Collected_CellPhone: String
+  Collected_WorkEmail: String
+  Collected_PersonalEmail: String
+  Collected_EmployerWebsite: String
+  Collected_LOWebSite: String
+  Collected_Linkedin: String
+  Collected_Twitter: String
+  Collected_Facebook: String
+  Collected_Other: String
+  ModiType: String
+}
+
+input ContactInput {
+  id: String
+  firstName: String
+  lastName: String
+  middleName: String
+  prefix: String
+  suffix: String
+  company: String
+  nmlsId: String
+  emails: [EmailInput]
+  phones: [PhoneInput]
+  links: [LinkInput]
+  title: String
+  reqId: String
+  address: AddressInput
+  linkedIn: String
+  facebook: String
+  website: String
+  tags: [ContactTagInput]
+  isCompanyContact: Boolean
+  avatarId: String
+  userId: String
+  tenantId: String
+  duplicate: String
+  twilioLookedUp: Boolean
+  TWGContactInfo: TWGContactInfoInput
+}
+
+input ContactBusinessInput {
+  volume: Int
+  avgPerUnit: Int
+  totalUnits: Int
+  purchasePercentage: Int
+  period: String!
+  peroid: String!
+  productMix: ProductMixInput
+  isUserInput: Boolean
+  isUserImport: Boolean
+  endMonth: Int
+  endYear: Int
+}
+
+input ProductMixInput {
+  conventional: Int
+  government: Int
+  nonConforming: Int
+  other: Int
+}
+
+input ContactFilter {
+  name: String
+  lastUpdatedAt: String
+  ids: [String]
+  company: String
+  state: String
+  nmlsId: String
+  city: String
+  mobileSearch: String
+  primaryPhone: String
+  secondaryPhone: String
+  primaryEmail: String
+  secondaryEmail: String
+  email: String
+  phone: String
+  title: String
+  dateCreated: String
+  tags: String
+  dateCreatedStart: String
+  dateCreatedEnd: String
+  lastUpdatedAtStart: String
+  lastUpdatedAtEnd: String
+}
+
+input QueryStringContactFilter {
+  query: String
+  options: QueryStringOptions
+  strict: Boolean
+}
+
+type QueryStringRawContactFilter {
+  displayName: String
+  key: String
+  type: String
+  value: String
+}
+
+input QueryStringRawContactFilterInput {
+  displayName: String
+  key: String
+  type: String
+  value: String
+}
+
+input QueryStringOptions {
+  default_field: String
+  fields: [String]
+  allow_leading_wildcard: Boolean
+  analyze_wildcard: Boolean
+  auto_generate_synonyms_phrase_query: Boolean
+  boost: Float
+  default_operator: String
+  enable_position_increments: Boolean
+  fuzziness: String
+  fuzzy_max_expansions: Int
+  fuzzy_prefix_length: Int
+  fuzzy_transpositions: Boolean
+  lenient: Boolean
+  max_determinized_states: Int
+  minimum_should_match: String
+  quote_analyzer: String
+  phrase_slop: Int
+  quote_field_suffix: String
+  rewrite: String
+  time_zone: String
+  all_fields: Boolean
+  flags: String
+}
+
+input UserContactSearchFilterInput {
+  name: String
+  filterCriteria: [QueryStringRawContactFilterInput]
+}
+
+input ReqContactSearchFilterInput {
+  name: String
+  reqId: String
+  filterCriteria: [QueryStringRawContactFilterInput]
+}
+
+input PersonalInfoInput {
+  details: String
+  birthdate: String
+  spouse: String
+  kids: String
+  anniversary: String
+  education: String
+  hobbies: String
+}
+
+input EmailInput {
+  type: String
+  address: String
+}
+
+input PhoneInput {
+  type: String
+  number: String
+}
+
+input LinkInput {
+  type: String
+  url: String
+}
+
+input AddressInput {
+  street: String
+  street2: String
+  city: String
+  state: String
+  zipCode: String
+}
+
+input ReqContactInput {
+  contactId: String!
+  reqId: String!
+  stage: ContactStage
+  stageEnteredDate: String
+  contacted: Boolean
+  assignedUser: UserInput
+}
+
+input ReqContactFilter {
+  name: String
+  source: String
+  company: String
+  stage: String
+  score: Float
+  contacted: Boolean
+  lastUpdatedAt: String
+  primaryPhone: String
+  secondaryPhone: String
+  city: String
+  state: String
+  title: String
+  dateCreated: String
+  nmlsId: String
+  tags: String
+  stageEnteredDateStart: String
+  stageEnteredDateEnd: String
+  stageDateRange: String
+  reqId: String
+  reqName: String
+  daysOfStage: String
+  daysOfStageOperator: String
+  dateCreatedStart: String
+  dateCreatedEnd: String
+  lastUpdatedAtStart: String
+  lastUpdatedAtEnd: String
+  assignedUser: String
+}
+
+input NoteInput {
+  contactId: String
+  reqId: String
+  note: String!
+  isPublic: Boolean
+}
+
+input HistoryInput {
+  type: String
+  contactId: String
+  reqId: String
+  userId: String
+  note: String!
+  isPublic: Boolean
+  analytics: String
+}
+
+input TenantInput {
+  title: String!
+  description: String
+  address: AddressInput
+  stripeSubId: String!
+}
+
+input AddUserInput {
+  tenantId: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  workPhone: String
+  cellPhone: String
+  title: String
+  workAddress: AddressInput
+}
+
+input ResendUserCodeInput {
+  email: String!
+}
+
+input AddTodoInput {
+  title: String!
+  type: String!
+  description: String
+  users: [UserInput]
+  contacts: [UserInput]
+  reqId: String
+  location: String
+  phone: String
+  duration: String
+  createdBy: String!
+  dueOn: String!
+  sendInvite: Boolean
+  isEmailAuthorized: Boolean
+}
+
+input UpdateTodoInput {
+  id: String!
+  title: String
+  description: String
+  type: String
+  location: String
+  phone: String
+  duration: String
+  dueOn: String
+  users: [UserInput]
+  contacts: [UserInput]
+  sendInvite: Boolean
+}
+
+input LeadsCriteria {
+  tenantId: String!
+  userId: String!
+  requisitionId: String
+  state: String
+  county: String
+  purchaseHeavy: Boolean
+  conventionalHeavy: Boolean
+  minVolume: Int
+  maxVolume: Int
+  nmlsId: String
+  companyNmlsId: String
+  branchState: String
+  regulator: String
+  title: String
+}
+
+input UpdateLeadInput {
+  firstName: String
+  lastName: String
+  cellPhone: String
+  city: String
+  company: String
+  county: String
+  email: String
+  title: String
+  workPhone: String
+  website: String
+  state: String
+}
+
+input UpdateUserInfoInput {
+  firstName: String
+  lastName: String
+  emails: [EmailInput]
+  notifications: Boolean
+  agentPhone: String
+  smsPhone: String
+  smsNotify: Boolean
+}
+
+input ImportLeadInput {
+  executionId: String!
+  nmlsIds: [String!]!
+}
+
+input ReqFilter {
+  title: String
+  status: String
+  name: String
+  owner: String
+  prospectsOperator: String
+  prospectsNumber: String
+  candidatesOperator: String
+  candidatesNumber: String
+  meetingsOperator: String
+  meetingsNumber: String
+  offersOperator: String
+  offersNumber: String
+  hiresOperator: String
+  hiresNumber: String
+  dateOperator: String
+  dateValue: String
+}
+
+input UpdateReqInput {
+  title: String
+  summary: String
+  status: Status
+}
+
+input ActivityCriteria {
+  title: String
+  description: String
+  type: String
+  participant: String
+  requisition: String
+  contact: String
+  dueDateStart: String
+  dueDateEnd: String
+  compeletedDateStart: String
+  compeletedDateEnd: String
+  completedBy: String
+  todoSection: String
+  activity: String
+  stage: String
+}
+
+input Page {
+  page: Int
+  pageSize: Int
+  totalSize: Int
+}
+
+input SortOption {
+  field: String
+  direction: String
+}
+
+input NewSortOption {
+  field: String!
+  options: NewSortOptionsOptions
+}
+
+input NewSortOptionsOptions {
+  order: String!
+  mode: String
+  nested: NestedSortOptions
+}
+
+input NestedSortOptions {
+  path: String
+  filter: FilterTerms
+}
+
+input FilterTerms {
+  term: Term
+}
+
+input Term {
+  production: String
+}
+
+input PlaybookTemplateFilter {
+  title: String
+  status: String
+}
+
+input PlaybookNoteInput {
+  id: String!
+  content: String
+  by: String
+  createdAt: String
+  modifiedAt: String
+}
+
+input PlaybookTaskInput {
+  id: String!
+  color: String
+  title: String
+  desc: String
+  notes: [PlaybookNoteInput!]
+  status: PlaybookItemStatus
+  dueDSE: Int! # days since event entered stage
+  weight: Int! # 0- 100
+  assignedTo: [String!]
+}
+
+input PlaybookStageInput {
+  id: String
+  tasks: [PlaybookTaskInput!]
+}
+
+input PlaybookCategoryInput {
+  id: String
+  title: String
+  desc: String
+  stages: [PlaybookStageInput!]
+}
+
+input PlaybookTemplateInput {
+  id: String
+  title: String
+  desc: String
+  categories: [PlaybookCategoryInput!]
+  order: Int
+}
+
+input PlaybookReqContactInput {
+  id: String
+  reqId: String
+  playbookTemplateId: String
+  playbookObj: PlaybookTemplateInput
+}
+
+input PlaybookTemplateReqLinkInput {
+  id: String
+  reqId: String
+  playbookTemplateId: String
+}
+
+input ContactTagInput {
+  tagId: String
+  name: String
+  order: Int
+}
+
+type StripePaymentIntent {
+  id: ID!
+  amount: Int!
+  client_secret: ID!
+  card: StripeCard
+}
+
+type StripeCard {
+  id: ID!
+  brand: String!
+  exp_month: String!
+  exp_year: String!
+  last4: String!
+}
+
+input StripePaymentIntentLeadMetadata {
+  nmlsId: ID!
+  contactId: ID!
+}
+
+enum StripePaymentIntentCancellationReason {
+  abandoned
+  duplicate
+  fraudulent
+  requested_by_customer
+}
+
+type NmlsValidationResult {
+  executionId: String!
+  status: String!
+  result: Boolean
+}
+
+#integrationKey
+type IntegrationKey {
+  apiKey: String!
+  iName: String!
+  webhookCode: String
+  createdBy: String
+  createdDate: String
+  modifiedDate: String
+}
+
+type SystemKey {
+  sysKey: String!
+  iName: String
+  createdBy: String
+  createdDate: String
+  modifiedDate: String
+}
+
+#UserSettingKey
+type UserSettingKey {
+  settingValue: String!
+  iName: String!
+  createdBy: String
+  createdDate: String
+  modifiedDate: String
+}
+
+type Click2CallResult {
+  msg: String
+  sid: String
+  parentSid: String
+  dateCreated: String
+  dateUpdated: String
+  to: String
+  from: String
+  contactNumber: String
+}
+
+type VerifyCallerIdResult {
+  msg: String
+  validationCode: String
+  callSid: String
+  phoneNumber: String
+}
+
+input ESFilterInput {
+  field: String
+  value: [String]
+  valueType: String
+  qualifier: String
+  bool: String
+}
+
+type ESFilter {
+  field: String
+  value: [String]
+  valueType: String
+  qualifier: String
+  bool: String
+}
+
+type ReportingSnapshot @aws_api_key @aws_cognito_user_pools {
+  id: ID!
+  createdAt: String
+  createdBy: ID
+  modifiedAt: String
+  modifiedBy: ID
+  name: String
+  password: String
+  sharedWithPublic: ReportingSnapshotPublicLink
+  sharedWithEmails: [ReportingSnapshotEmailLink!]!
+  sharedWithUsers: [ID!]!
+  downloadUrl: String
+  uploadUrl: String
+}
+
+type ReportingSnapshotVersion {
+  id: ID!
+  modifiedAt: String!
+  modifiedBy: ID!
+  size: Int!
+  downloadUrl: String!
+}
+
+type ReportingSnapshotEmailLink {
+  id: ID!
+  createdAt: String!
+  createdBy: ID!
+  modifiedAt: String!
+  path: String!
+  email: String!
+  hits: Int!
+}
+
+type ReportingSnapshotPublicLink {
+  id: ID!
+  createdAt: String!
+  createdBy: ID!
+  modifiedAt: String
+  path: String!
+  hits: Int!
+}
+
+type messageLogUpdatedResponse @aws_cognito_user_pools @aws_api_key {
+  userId: String!
+  contactNumber: String
+  agentNumber: String
+  data: String
+}
+
+input CreateReportingSnapshotInput {
+  name: String
+  password: String
+  shareWithPublic: Boolean
+  shareWithEmails: [String!]
+  shareWithUsers: [ID!]
+}
+
+input ReadReportingSnapshotInput {
+  linkId: ID
+  snapshotId: ID
+}
+
+input UpdateReportingSnapshotInput {
+  id: ID!
+  name: String
+  password: String
+  updateData: Boolean
+}
+
+input ShareReportingSnapshotInput {
+  id: ID!
+  shareWithPublic: Boolean
+  shareWithEmails: [String!]
+  shareWithUsers: [ID!]
+}
+
+input EmailInputTwo {
+  to: String!
+  subject: String!
+  html: String!
+  from: String
+  cc: String
+  bcc: String
+  text: String
+}
+
+input AssigneeInput {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  emails: [EmailInput]!
+  active: Boolean!
+}
+
+input ImportHeaderInput {
+  index: Int
+  keep: Boolean
+  matched: String
+  displayKey: String
+  originalKey: String
+}
+
+input ContactImportOptionsInput {
+  importType: ContactImportType!
+  assignee: AssigneeInput
+  count: Int
+  headers: [ImportHeaderInput]
+  tenantId: String
+  tenantName: String
+  reqId: String
+  reqName: String
+  tags: [ContactTagInput]
+  skipEmail: Boolean
+}
+
+type Assignee {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  emails: [Email]!
+  active: Boolean!
+}
+
+type ImportHeader {
+  index: Int
+  keep: Boolean
+  matched: String
+  displayKey: String
+  originalKey: String
+}
+
+type ImportTag {
+  tagId: String
+  name: String
+  order: Int
+}
+
+type ImportOptions {
+  importType: ContactImportType!
+  assignee: Assignee
+  count: Int
+  headers: [ImportHeader]
+  tenantId: String
+  tenantName: String
+  reqId: String
+  reqName: String
+  tags: [ImportTag]
+  skipEmail: Boolean
+}
+
+type ImportDoc {
+  completed: Boolean
+  contactsImported: Int
+  createdAt: String
+  duplicates: Int
+  inProgress: Boolean
+  fileUploaded: Boolean
+  key: String
+  status: String
+  options: ImportOptions
+}
+
+type Suggestion {
+  mmKey: String
+  mmValue: String
+  mmType: String
+  pdlSuggestion: String
+}
+
+type trainingUserInfo {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  emails: [Email]!
+  created: String
+  active: Boolean!
+  username: String
+  tenantId: String
+  productivity: UserAggs
+  notifications: Boolean
+  agentPhone: String
+  smsPhone: String
+  smsNotify: Boolean
+}
+
+input PipeflowSettingsInput {
+  candidates: String
+  meetings: String
+  offers: String
+  hires: String
+  featureEnabled: Boolean
+}
+
+type PipeflowSettings {
+  candidates: String
+  meetings: String
+  offers: String
+  hires: String
+  featureEnabled: Boolean
+}
+
+type BonzoWebhookDoc {
+  pipeflowSettings: PipeflowSettings
+}
+
+type MarketSearchResponse {
+  found: Boolean!
+  branchData: Boolean
+  data: String
+}
+
+input GeoCodeInput {
+  lat: Float!
+  lon: Float!
+}
+
+type GeoCode {
+  lat: Float
+  lon: Float
+}
+
+type UserMetric {
+  places: Int
+  map_render: Int
+  lastActivity: String
+}
+
+type uploadResumeResponse {
+  uploadUrl: String
+  id: String
+  myKey: String
+}
+
+type getResumeInfoResponse {
+  name: String
+  email: String
+  phoneNumber: String
+  address: String
+  profiles: String
+  skills: String
+  languages: String
+  summary: String
+  experience: String
+  education: String
+  duplicate: [DuplicateUsers]
+}
+
+type DuplicateUsers {
+  name: String
+  email: String
+  phoneNumber: String
+  title: String
+  company: String
+  userId: String
+}
+
+type CompanyLicense {
+  Status: String
+  CompanyNMLSID: String
+  StatusDate: String
+  LicenseNumber: String
+  IsAuthorized: String
+  IssueDate: String
+  Regulator: String
+  RenewedThrough: String
+  LicenseID: String
+  LicenseType: String
+}
+
+type BranchInfo {
+  Street: String
+  Street2: String
+  City: String
+  Country: String
+  State: String
+  location: GeoCode
+  IsAuthorized: Boolean
+  CompanyNMLSID: String
+  BranchNMLSID: String
+  type: String
+  PostalCode: String
+  teamSize: Int
+  individuals: [String]
+  Name: String
+  volume: String
+  unitCount: Int
+}
+
+type CompanyInfo {
+  Street: String
+  Street2: String
+  City: String
+  Country: String
+  State: String
+  location: GeoCode
+  CompanyNMLSID: String
+  PostalCode: String
+  FormedIn: String
+  DateFormed: String
+  BusinessStructure: String
+  PrimaryFederalRegulator: String
+  teamSize: Int
+  totalTeamSize: Int
+  individuals: [String]
+  isFedRegulated: Boolean
+  StockSymbol: String
+  licenses: [CompanyLicense]
+  RegistrationStatus: String
+  Name: String
+  volume: Float
+  unitCount: Int
+  branches: [String]
+  websites: [String]
+  BranchNMLSID: String
+  IsAuthorized: Boolean
+  trailing12: Trailing12Report
+}
+
+type BranchDetailsResponse {
+  branchManagers: [BranchManager]
+  company: CompanyInfo
+}
+
+input SortOptionInput {
+  keyword: String
+  order: String
+  nested_path: String
+  missing: String
+}
+
+input TeamTableOptionsInput {
+  from: Int
+  size: Int
+  term: String
+  sort: [SortOptionInput]
+}
+
+input BranchTableOptionsInput {
+  from: Int
+  size: Int
+  term: String
+  sort: [SortOptionInput]
+}
+
+type LeadsInfoWithOptions {
+  data: [Lead]
+  total: Int
+}
+
+type BranchesWithOptions {
+  data: [BranchInfo]
+  total: Int
+}
+
+input DupeLeadInput {
+  firstName: String
+  lastName: String
+  nmlsId: String
+}
+
+type AssigneeNameFragment {
+  firstName: String
+  lastName: String
+}
+
+type LeadDuplicate {
+  nmlsId: String
+  firstName: String
+  lastName: String
+  company: String
+  stage: String
+  reqName: String
+  contactId: String
+  reqId: String
+  assignedUser: AssigneeNameFragment
+}
+
+type LeadDuplicatesResponse {
+  duplicates: [LeadDuplicate]
+}
+
+type SearchIndividualsResponse {
+  location: GeoCode
+  originators: [Lead]!
+}
+
+type SequenceQueue {
+  createdAt: String
+  scheduledAt: String!
+  eventId: String
+  queueId: String!
+  target: String!
+  source: String!
+  channel: String
+  sequenceId: String!
+  system: String!
+  step: String
+  contact: ContactNameFragment
+  req: ReqNameFragment
+  user: User
+  qaFlag: Boolean
+  runId: String
+}
+
+input SequenceQueueInput {
+  createdAt: String
+  scheduledAt: String!
+  eventId: String
+  queueId: String!
+  target: String!
+  source: String!
+  channel: String
+  sequenceId: String!
+  title: String
+  system: String!
+  step: String
+  contact: ContactInput
+  req: ReqNameFragmentInput
+  user: UserFragmentInput
+  qaFlag: Boolean
+  runId: String
+}
+
+input ReqNameFragmentInput {
+  id: String
+  name: String
+}
+
+type ReqNameFragment {
+  id: String
+  name: String
+}
+
+input UserFragmentInput {
+  id: String!
+  firstName: String!
+  lastName: String!
+  emails: [EmailInput]!
+  username: String
+  tenantId: String
+  agentPhone: String
+  smsPhone: String
+  smsNotify: Boolean
+}
+
+type TwilioPhoneLookup {
+  phoneType: String
+}
+type CreditProfile {
+  dateCreated: String
+  createdBy: String
+  notificationEmail: String
+  lastUpdated: String
+  totalCredits: Int
+  creditMax: Int
+  notificationThreshold: Float
+  enabled: Boolean
+}
+
+input CreditUsageInput {
+  enrichment: Int
+  pipeline: Int
+}
+
+type AddPipelineResponse {
+  success: Boolean!
+  message: String
+}
+
+# type TransactionMix {
+#   purchase: Int
+#   refinance: Int
+#   construction: Int
+#   equity: Int
+#   REO: Int
+# }
+
+# type LoanTypes {
+#   conventional: Int
+#   HE: Int
+#   FHA: Int
+#   VA: Int
+#   USDA: Int
+#   HELOC: Int
+#   building: Int
+#   balloon: Int
+#   commercial: Int
+#   reverse: Int
+#   other: Int
+#   unknown: Int
+# }
+
+type TopState {
+  name: String!
+  count: Int
+  volume: Float
+}
+
+type Trailing12Report {
+  period: String
+  endYear: Int
+  endMonth: Int
+  volume: Float
+  totalUnits: Int
+  avgPerUnit: Int
+  purchasePercentage: Int
+  productMix: ProductMix
+  transactionMix: TransactionMix
+  loanTypes: LoanTypes
+  topStates: [TopState]
+  topLenders: [TopState]
+  topOriginators: [TopState]
+  topCities: [TopState]
+  months: [MonthlyReport]
+  weeks: [WeeklyReport]
+}
+
+type MortgageProduction {
+  count: Int
+  min: Int
+  max: Int
+  avg: Float
+  sum: Float
+}
+
+type MonthlyReport {
+  date_range: String
+  production: MortgageProduction
+  productMix: ProductMix
+  purchase: Int
+  refi: Int
+  per_purchase: Int
+  per_refi: Int
+  per_conventional: Int
+  per_government: Int
+}
+
+type WeeklyReport {
+  date_range: String
+  production: MortgageProduction
+  period: String
+  endMonth: Int
+  endYear: Int
+  volume: Float
+  totalUnits: Int
+  avgPerUnit: Int
+  purchasePercentage: Int
+  productMix: ProductMix
+  transactionMix: TransactionMix
+  loanTypes: LoanTypes
+  topStates: [TopState]
+  topLenders: [TopState]
+  topOriginators: [TopState]
+  topCities: [TopState]
+}
+
+type PointReport {
+  date_range: String
+  production: MortgageProduction
+  productMix: ProductMix
+  purchase: Int
+  refi: Int
+  per_purchase: Int
+  per_refi: Int
+  per_conventional: Int
+  per_government: Int
+}
+
+type PeriodAggReport {
+  date_range: String
+  production: MortgageProduction
+  period: String
+  endMonth: Int
+  endYear: Int
+  volume: Float
+  totalUnits: Int
+  avgPerUnit: Int
+  purchasePercentage: Int
+  productMix: ProductMix
+  transactionMix: TransactionMix
+  loanTypes: LoanTypes
+  topStates: [TopState]
+  topLenders: [TopState]
+  topOriginators: [TopState]
+  topCities: [TopState]
+}
+
+type VolumeReport {
+  periodAggs: PeriodAggReport
+  trailing12: Trailing12Report
+  report: AnnualVolumeReport
+  monthly: [MonthlyReport]
+  weekly: [WeeklyReport]
+  years: [AnnualVolumeReport]
+  points: [PointReport]
+}
+
+type EmailTemplate {
+  templateId: String
+  templateTitle: String
+  templateBody: String
+}
+
+type EmailSignature {
+  signature: String
+  useSignature: Boolean
+}
+
+type CallForwardingResponse {
+  data: String
+}
+
+type CognitoGroups {
+  email: String
+  groups: [String]
+}
+
+type SequenceSummary {
+  contactID: String
+  firstName: String
+  lastName: String
+  totalSent: Int
+  step: Int
+  lastMessageSent: String
+  createdDate: String
+}
+
+type SMSDeliveryTotal {
+  delivered: Int
+  total: Int
+}
+
+type AutoLogOutUserResponse @aws_cognito_user_pools @aws_api_key {
+  userName: String
+  data: String!
+  deviceKey: String
+}
+
+type ReportObj {
+  id: String
+  name: String
+  desc: String
+  rType: String
+  cols: Int
+  rows: Int
+  order: Int
+  x: Int
+  y: Int
+  ribbon: String
+  data: String
+  esFilters: [ESFilter]
+  index: String
+  dateTarget: String
+  loaded: Boolean
+  useStoredData: Boolean
+  triggerChange: Boolean
+}
+
+type ReportTemplate {
+  id: String
+  pKey: String
+  title: String
+  desc: String
+  reportObjects: [ReportObj]
+  reportTemplateSettings: ReportTemplateSettings
+}
+
+type ReportTemplateSettings {
+  reqIds: [String]
+  userIds: [String]
+  startDate: String
+  endDate: String
+  selectedReqIds: [String]
+  selectedReqs: [UserReq]
+  selectedUserIds: [String]
+  selectedUsers: [User]
+  reportingTheme: [String]
+}

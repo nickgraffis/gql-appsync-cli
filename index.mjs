@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import deepMerge from 'deepmerge';
 import { parse, stringify } from 'yaml'
 import inquirer from 'inquirer';
+import { parseFields } from './utils.mjs';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -35,7 +36,7 @@ async function go() {
   // Parse through each file for all of the types
   await files.asyncForEach(async (file) => {
     let schema = fs.readFileSync(`${__dirname}/${file}`, 'utf8');
-    schema = schema.replace(/\n/g, '');
+    schema = schema.replace(/\n/g, 'NN');
     let types = {}
     // first we need the types and, if present their directive and directive arguments
     schema.match(/type\s+(\w+)/g).forEach(type => {
@@ -65,74 +66,78 @@ async function go() {
 
     await Object.keys(types).asyncForEach(async (type) => {
       // match eveything after the type name and the anything and then {
-      let match = schema.match(new RegExp(`type ${type}(.*?){(.*?)}`))
-      let fields = {}
-      if (match) {
-        await match[2].split('  ').asyncForEach(async (field) => {
-          let fieldName, fieldType, args;
-          if (field.includes('):')) {
-            fieldName = field.split('):')[0] + ')'
-            // remove everything inside the () and save it to args in regex
-            let [_fieldName, _args] = fieldName.split('(')
-            fieldName = _fieldName
-            args = _args.split(')')[0].split(',').map(arg => {
-              return {
-                [arg.trim().split(':')[0]]: arg.trim().split(':')[1]?.trim()
-              }
-            })
+      schema = schema.replace(/NN/g, '\n');
+      let match = schema.match(new RegExp(`type ${type}(.*?){((.|\n)*?)}`))
+      let fields = parseFields(match[2])
+      console.log(fields)
+      types[type].fields = fields
+    //   let fields = {}
+    //   if (match) {
+    //     await match[2].split('  ').asyncForEach(async (field) => {
+    //       let fieldName, fieldType, args;
+    //       if (field.includes('):')) {
+    //         fieldName = field.split('):')[0] + ')'
+    //         // remove everything inside the () and save it to args in regex
+    //         let [_fieldName, _args] = fieldName.split('(')
+    //         fieldName = _fieldName
+    //         args = _args?.split(')')[0].split(',').map(arg => {
+    //           return {
+    //             [arg.trim().split(':')[0]]: arg.trim().split(':')[1]?.trim()
+    //           }
+    //         })
 
-            // turn this into an object instead of an array of objects
-            if (args instanceof Array) {
-              args = args.reduce((acc, curr) => {
-                return { ...acc, ...curr }
-              } , {})
-            }
-            fieldType = field.split('):')[1]
-          } else {
-            let [_fieldName, ...rest] = field.split(':');
-            fieldType = rest.join(':');
-            fieldName = _fieldName;
-          }
+    //         // turn this into an object instead of an array of objects
+    //         if (args instanceof Array) {
+    //           args = args.reduce((acc, curr) => {
+    //             return { ...acc, ...curr }
+    //           } , {})
+    //         }
+    //         fieldType = field.split('):')[1]
+    //       } else {
+    //         let [_fieldName, ...rest] = field.split(':');
+    //         fieldType = rest.join(':');
+    //         fieldName = _fieldName;
+    //       }
 
-          if (fieldType?.includes('@')) {
-            let dirSplit = fieldType.split('@')
-            await dirSplit.slice(1).asyncForEach(async (directive) => {
-              let dir = directive.match(new RegExp(`(\\w+)(\\(((.|\n)*)\\))?`))
-              if (dir) {
-                if (!fields[fieldName]?.directives) {
-                  fields[fieldName] = { directives: {} }
-                }
-                fields[fieldName].directives[dir[1]] = dir?.[3] ? dir[3].split(',').map(arg => {
-                  return {
-                    [arg.trim().split(':')[0]]: arg.trim().split(':')[1].match(/"(.*?)"/)?.[1]
-                  }
-                }) : true
+    //       if (fieldType?.includes('@')) {
+    //         let dirSplit = fieldType.split('@')
+    //         await dirSplit.slice(1).asyncForEach(async (directive) => {
+    //           let dir = directive.match(new RegExp(`(\\w+)(\\(((.|\n)*)\\))?`))
+    //           if (dir) {
+    //             if (!fields[fieldName]?.directives) {
+    //               fields[fieldName] = { directives: {} }
+    //             }
+    //             fields[fieldName].directives[dir[1]] = dir?.[3] ? dir[3].split(',').map(arg => {
+    //               return {
+    //                 [arg.trim().split(':')[0]]: arg.trim().split(':')[1].match(/"(.*?)"/)?.[1]
+    //               }
+    //             }) : true
     
-                // turn this into an object instead of an array of objects
-                if (fields[fieldName].directives[dir[1]] instanceof Array) {
-                  fields[fieldName].directives[dir[1]] = fields[fieldName].directives[dir[1]].reduce((acc, curr) => {
-                    return { ...acc, ...curr }
-                  } , {})
-                }
+    //             // turn this into an object instead of an array of objects
+    //             if (fields[fieldName].directives[dir[1]] instanceof Array) {
+    //               fields[fieldName].directives[dir[1]] = fields[fieldName].directives[dir[1]].reduce((acc, curr) => {
+    //                 return { ...acc, ...curr }
+    //               } , {})
+    //             }
     
-                fields[fieldName].type = dirSplit[0].trim()
-              }
-            })
-          } else if (fieldName && fieldType) {
-            fields[fieldName.trim()] = fieldType?.trim()
-          }
+    //             fields[fieldName].type = dirSplit[0].trim()
+    //           }
+    //         })
+    //       } else if (fieldName && fieldType) {
+    //         fields[fieldName.trim()] = fieldType?.trim()
+    //       }
 
-          if (args && typeof fields[fieldName.trim()] === 'object') {
-            fields[fieldName.trim()].args = args
-          }
-        })
-        types[type].fields = fields
-      }
+    //       if (args && typeof fields[fieldName.trim()] === 'object') {
+    //         fields[fieldName.trim()].args = args
+    //       }
+    //     })
+    //     types[type].fields = fields
+    //   }
     })
     globalTypes = deepMerge(globalTypes, types)
   })
 
-  console.log(JSON.stringify(globalTypes, null, 2))
+  // console.log(JSON.stringify(globalTypes, null, 2))
   let mappingTemplates = []
   // for every typ that has the resolver directive, we will need to create a mappingTemplate object
   // that will be used to create the mappingTemplate for the resolver
@@ -204,7 +209,7 @@ async function go() {
                 }
               })
 
-              fs.writeFileSync(`${__dirname}/dataSources.yml`, stringify(dataSources, {
+              fs.writeFileSync(`${__dirname}/dataSources.yml`, stringify({ dataSources }, {
                 header: true,
                 indent: 2
               }))
@@ -242,7 +247,7 @@ async function go() {
     }
   })
 
-  console.log(mappingTemplates)
+  // console.log(mappingTemplates)
   fs.writeFileSync('./appsync-gql.map.json', JSON.stringify(globalTypes, null, 2))
 }
 

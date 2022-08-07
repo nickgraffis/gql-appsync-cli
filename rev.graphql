@@ -1,0 +1,14 @@
+type Query  {
+  getMyReqs(
+    reqFilter: ReqFilter, 
+    userId: String, 
+    tenantId: String
+  ): [UserReq!]! 
+  getMyReqsAdminFiltered(tenantId: String, reqFilter: ReqFilter): [UserReq!]!
+  filterMyReqs(page: Page, filters: ReqFilter, sortOption: SortOption): FilterReqsResult!  @aws_shiz @other(name: "filterMyReqs", type: "FilterReqsResult")
+  getMyContacts(contactIds: [String]): [UserContact!]!
+  filterMyContacts(page: Page, filters: ContactFilter, sortOption: SortOption, fuzziness: [String]): FilterContactsResult!
+  filterUserContacts(page: Page, filters: [QueryStringContactFilter], sortOption: [NewSortOption], index: String, reqStatus: String, showDeletedContactsOnly: Boolean): FilterContactsResult!
+  searchMyData(searchKey: String): SearchResult!
+  getContact(contactId: String): Contact!
+}

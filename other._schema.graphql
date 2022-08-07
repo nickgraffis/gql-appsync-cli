@@ -1,4 +1,7 @@
 type Query {
-  hi(id: ID!): Req
+  hi(
+    id: ID!, 
+    test: ID!
+  ): Req
   hello(id: ID!): Req @test(requires: "test", other: "test")
 }

@@ -1,0 +1,6917 @@
+{
+  "schema": {
+    "variable": false,
+    "fields": {
+      "query": {
+        "return": "Query"
+      },
+      "mutation": {
+        "return": "Mutation"
+      },
+      "subscription": {
+        "return": "Subscription"
+      }
+    }
+  },
+  "Subscription": {
+    "variable": "type",
+    "fields": {
+      "updatedLiveCounter": {
+        "return": "String",
+        "directives": {
+          "aws_subscribe": {
+            "mutations": "[\"setLiveCounter\"]"
+          }
+        }
+      },
+      "updatedMessageLog": {
+        "return": "messageLogUpdatedResponse",
+        "args": {
+          "userId": "String!",
+          "contactNumber": "String",
+          "agentNumber": "String"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": "[\"messageLogUpdated\"]"
+          }
+        }
+      },
+      "updatedAgentMessageLog": {
+        "return": "messageLogUpdatedResponse",
+        "args": {
+          "userId": "String!",
+          "agentNumber": "String"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": "[\"messageLogUpdated\"]"
+          }
+        }
+      },
+      "callForwardingNumber": {
+        "return": "String",
+        "args": {
+          "smsNumber": "String!",
+          "userNumber": "String!"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": "[\"callForwarding\"]"
+          }
+        }
+      },
+      "updatedUsernameLogIn": {
+        "return": "AutoLogOutUserResponse",
+        "args": {
+          "userName": "String!"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": "[\"autoLogOutUser\"]"
+          }
+        }
+      },
+      "updatedUserDeviceLogIn": {
+        "return": "AutoLogOutUserResponse",
+        "args": {
+          "deviceKey": "String!"
+        },
+        "directives": {
+          "aws_subscribe": {
+            "mutations": "[\"autoLogOutUser\"]"
+          }
+        }
+      }
+    }
+  },
+  "Query": {
+    "variable": "type",
+    "fields": {
+      "getMyReqs": {
+        "return": "[UserReq!]!",
+        "args": {
+          "reqFilter": "ReqFilter",
+          "userId": "String",
+          "tenantId": "String"
+        }
+      },
+      "getMyReqsAdminFiltered": {
+        "return": "[UserReq!]!",
+        "args": {
+          "tenantId": "String",
+          "reqFilter": "ReqFilter"
+        }
+      },
+      "filterMyReqs": {
+        "return": "FilterReqsResult!",
+        "args": {
+          "page": "Page",
+          "filters": "ReqFilter",
+          "sortOption": "SortOption"
+        }
+      },
+      "getMyContacts": {
+        "return": "[UserContact!]!",
+        "args": {
+          "contactIds": "[String]"
+        }
+      },
+      "filterMyContacts": {
+        "return": "FilterContactsResult!",
+        "args": {
+          "page": "Page    filters"
+        }
+      },
+      "filterUserContacts": {
+        "return": "FilterContactsResult!",
+        "args": {
+          "page": "Page    filters"
+        }
+      },
+      "searchMyData": {
+        "return": "SearchResult!",
+        "args": {
+          "searchKey": "String"
+        }
+      },
+      "getContact": {
+        "return": "Contact!",
+        "args": {
+          "contactId": "String"
+        }
+      },
+      "getContactBusiness": {
+        "return": "[ContactBusiness]!",
+        "args": {
+          "contactId": "String"
+        }
+      },
+      "getContactUsers": {
+        "return": "[User]",
+        "args": {
+          "contactId": "String"
+        }
+      },
+      "getContactReqs": {
+        "return": "[ContactRequisition!]!",
+        "args": {
+          "contactId": "String!"
+        }
+      },
+      "getContactDocuments": {
+        "return": "[ContactDocument!]!",
+        "args": {
+          "contactId": "String!",
+          "reqId": "String"
+        }
+      },
+      "getContactDocumentUrl": {
+        "return": "ContactDocumentUrl!",
+        "args": {
+          "contactId": "String!",
+          "documentId": "String!",
+          "reqId": "String"
+        }
+      },
+      "getContactAvatarUrl": {
+        "return": "ContactAvatarUrl!",
+        "args": {
+          "contactId": "String!"
+        }
+      },
+      "getUserAvatarUrl": {
+        "return": "ContactAvatarUrl!",
+        "args": {
+          "userId": "String!"
+        }
+      },
+      "filterReqContacts": {
+        "return": "FilterReqContactsResult!",
+        "args": {
+          "reqIds": "[String]    page"
+        }
+      },
+      "getMyTenants": {
+        "return": "[Tenant!]!"
+      },
+      "filterMyTodos": {
+        "return": "ActivityResponse!",
+        "args": {
+          "page": "Page",
+          "filters": "ActivityCriteria",
+          "sortOption": "SortOption"
+        }
+      },
+      "filterAllTodos": {
+        "return": "ActivityResponse!",
+        "args": {
+          "page": "Page",
+          "filters": "ActivityCriteria",
+          "sortOption": "SortOption"
+        }
+      },
+      "getUserMentions": {
+        "return": "[History]!",
+        "args": {
+          "userId": "String"
+        }
+      },
+      "getReq": {
+        "return": "Requisition",
+        "args": {
+          "reqId": "String"
+        }
+      },
+      "getUserContactSavedFilters": {
+        "return": "[UserContactSearchFilter]"
+      },
+      "getReqContactSavedFilters": {
+        "return": "[ReqContactSearchFilter]",
+        "args": {
+          "reqId": "String"
+        }
+      },
+      "getReqContacts": {
+        "return": "[ReqContact]",
+        "args": {
+          "reqId": "String"
+        }
+      },
+      "changeReqContactTouchedStatus": {
+        "return": "ReqContact",
+        "args": {
+          "reqId": "String",
+          "contactId": "String"
+        }
+      },
+      "getTenantReqs": {
+        "return": "[Requisition]",
+        "args": {
+          "tenantId": "String"
+        }
+      },
+      "filterMyActivityHistory": {
+        "return": "HistoryResponse!",
+        "args": {
+          "page": "Page",
+          "filters": "ActivityCriteria",
+          "sortOption": "SortOption"
+        }
+      },
+      "filterAllActivityHistory": {
+        "return": "HistoryResponse!",
+        "args": {
+          "page": "Page",
+          "filters": "ActivityCriteria",
+          "sortOption": "SortOption"
+        }
+      },
+      "getReqUsers": {
+        "return": "[User]!",
+        "args": {
+          "reqId": "String",
+          "prodStartDate": "String",
+          "prodEndDate": "String"
+        }
+      },
+      "getTenant": {
+        "return": "Tenant!",
+        "args": {
+          "tenantId": "String!",
+          "prodStartDate": "String",
+          "prodEndDate": "String"
+        }
+      },
+      "getContactPersonalInfo": {
+        "return": "PersonalInfo!",
+        "args": {
+          "contactId": "String!"
+        }
+      },
+      "getContactImportStatus": {
+        "return": "ContactImportStatus!",
+        "args": {
+          "uploadId": "String!"
+        }
+      },
+      "getLeadsResults": {
+        "return": "LeadsSearchResults!",
+        "args": {
+          "leadExecutionId": "String!",
+          "cursor": "String"
+        }
+      },
+      "getUserReqs": {
+        "return": "[UserReq]!",
+        "args": {
+          "userId": "String!"
+        }
+      },
+      "getUserInfo": {
+        "return": "User!",
+        "args": {
+          "userId": "String!"
+        }
+      },
+      "getTodo": {
+        "return": "Todo",
+        "args": {
+          "todoId": "String!"
+        }
+      },
+      "listPlaybookTemplates": {
+        "return": "[PlaybookTemplate!]!",
+        "args": {
+          "tenantId": "String",
+          "playbookTemplateFilter": "String"
+        }
+      },
+      "readPlaybookTemplate": {
+        "return": "PlaybookTemplate",
+        "args": {
+          "tenantId": "String",
+          "playbookTemplateId": "String!"
+        }
+      },
+      "readSinglePlaybookReqContact": {
+        "return": "PlaybookReqContact",
+        "args": {
+          "tenantId": "String    reqId"
+        }
+      },
+      "readPlaybookTemplateReqLinkByReq": {
+        "return": "PlaybookTemplateReqLink",
+        "args": {
+          "tenantId": "String",
+          "reqId": "String",
+          "useTopDefault": "Boolean"
+        }
+      },
+      "listPlaybookTemplateReqLinks": {
+        "return": "[PlaybookTemplateReqLink]!",
+        "args": {
+          "playbookTemplateReqLinksFilter": "String"
+        }
+      },
+      "listContactTags": {
+        "return": "[ContactTag!]!",
+        "args": {
+          "tenantId": "String",
+          "contactTagFilter": "String",
+          "reqId": "String"
+        }
+      },
+      "readContactTag": {
+        "return": "ContactTag",
+        "args": {
+          "tenantId": "String",
+          "contactTagId": "String!",
+          "reqId": "String"
+        }
+      },
+      "getUserTodos": {
+        "return": "[Todo!]!",
+        "args": {
+          "userId": "String!"
+        }
+      },
+      "listDuplicateContacts": {
+        "return": "[ContactTableResults]!",
+        "args": {
+          "contactId": "String!"
+        }
+      },
+      "getNmlsValidation": {
+        "return": "NmlsValidationResult!",
+        "args": {
+          "executionId": "String!"
+        }
+      },
+      "getReqContactTags": {
+        "return": "[ContactTag!]!",
+        "args": {
+          "reqId": "String",
+          "contactId": "String!"
+        }
+      },
+      "readIntegrationKey": {
+        "return": "IntegrationKey!",
+        "args": {
+          "iName": "String!"
+        }
+      },
+      "validateCallerId": {
+        "return": "Boolean!",
+        "args": {
+          "agentNumber": "String!"
+        }
+      },
+      "verifyCallerId": {
+        "return": "VerifyCallerIdResult!",
+        "args": {
+          "agentNumber": "String!",
+          "agentInfo": "String!"
+        }
+      },
+      "getFeatureClick2Call": {
+        "return": "Boolean!",
+        "args": {
+          "tenantId": "String!"
+        }
+      },
+      "getCallStatus": {
+        "return": "String!",
+        "args": {
+          "callServiceId": "String!"
+        }
+      },
+      "getReportingCounts": {
+        "return": "String!",
+        "args": {
+          "index": "[String]!    page"
+        }
+      },
+      "getFeatureByName": {
+        "return": "Boolean!",
+        "args": {
+          "feature": "String!",
+          "tenantId": "String!"
+        }
+      },
+      "getFeatureByNameForUser": {
+        "return": "Boolean!",
+        "args": {
+          "feature": "String!    userId"
+        }
+      },
+      "listReportingTemplates": {
+        "return": "String!",
+        "args": {
+          "reportingTemplateFilter": "String",
+          "tenantId": "String"
+        }
+      },
+      "readReportingTemplate": {
+        "return": "String",
+        "args": {
+          "reportingTemplateId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "readUserSettingKey": {
+        "return": "UserSettingKey!",
+        "args": {
+          "iName": "String!"
+        }
+      },
+      "listReportObjects": {
+        "return": "String!",
+        "args": {
+          "ReportObjectFilter": "String",
+          "tenantId": "String"
+        }
+      },
+      "readReportObject": {
+        "return": "String",
+        "args": {
+          "ReportObjectId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "readReportingSnapshot": {
+        "return": "ReportingSnapshot!",
+        "args": {
+          "input": "ReadReportingSnapshotInput!"
+        },
+        "directives": {
+          "aws_cognito_user_pools": true,
+          "aws_api_key": true
+        }
+      },
+      "getReqFiltersUsers": {
+        "return": "[User]!",
+        "args": {
+          "reqIds": "[String]!"
+        }
+      },
+      "listBonzoCampaigns": {
+        "return": "String!",
+        "args": {
+          "iAPIKeyBONZO": "String!"
+        }
+      },
+      "proxyGet": {
+        "return": "String!",
+        "args": {
+          "url": "String!",
+          "headers": "String"
+        }
+      },
+      "isZapAuthenticated": {
+        "return": "Zapier!",
+        "args": {
+          "userId": "String"
+        }
+      },
+      "readSystemKey": {
+        "return": "SystemKey!",
+        "args": {
+          "iName": "String!"
+        }
+      },
+      "getCurrentOAuthToken": {
+        "return": "String!",
+        "args": {
+          "iName": "String!",
+          "basicAuth": "Boolean"
+        }
+      },
+      "listAvailableNumbers": {
+        "return": "String!",
+        "args": {
+          "total": "String",
+          "npa": "String",
+          "npx": "String"
+        }
+      },
+      "readNumber": {
+        "return": "String!",
+        "args": {
+          "number": "String!"
+        }
+      },
+      "listMessageConversationalHistory": {
+        "return": "String!",
+        "args": {
+          "to": "String!",
+          "from": "String!",
+          "size": "String",
+          "start": "String",
+          "direction": "String"
+        }
+      },
+      "getMMSMedia": {
+        "return": "[MMSMedia!]!",
+        "args": {
+          "mmsMediaDocId": "String"
+        }
+      },
+      "getMMSMediaUrl": {
+        "return": "String!",
+        "args": {
+          "mmsMediaDocId": "String!",
+          "thumb": "String!"
+        }
+      },
+      "getLiveCounter": {
+        "return": "String!",
+        "args": {
+          "placeholder": "String"
+        }
+      },
+      "searchMessageConversationalHistory": {
+        "return": "String!",
+        "args": {
+          "searchPhrase": "String    businessAddress"
+        }
+      },
+      "listConversations": {
+        "return": "listMessageConversationResult",
+        "args": {
+          "assignedNumber": "String!    size"
+        }
+      },
+      "trainingGetUserInfo": {
+        "return": "trainingUserInfo",
+        "args": {
+          "placeHolder": "String"
+        }
+      },
+      "getUserImportHistory": {
+        "return": "[ImportDoc]",
+        "args": {
+          "userId": "String!"
+        }
+      },
+      "getContactImportDownloadURL": {
+        "return": "ContactDocumentUrl",
+        "args": {
+          "fileName": "String!"
+        }
+      },
+      "getEnrichmentSuggestions": {
+        "return": "[Suggestion]",
+        "args": {
+          "form": "String!",
+          "contactId": "String!",
+          "reqId": "String!"
+        }
+      },
+      "getContactFromUserContacts": {
+        "return": "[ContactNameFragment!]",
+        "args": {
+          "phoneNumber": "String!"
+        }
+      },
+      "getBonzoWebhookDoc": {
+        "return": "BonzoWebhookDoc",
+        "args": {
+          "webhookCode": "String!"
+        }
+      },
+      "getUserMetrics": {
+        "return": "UserMetric",
+        "args": {
+          "userId": "String!"
+        }
+      },
+      "getReqContact": {
+        "return": "ReqContact",
+        "args": {
+          "contactId": "String!",
+          "reqId": "String!"
+        }
+      },
+      "uploadContactResume": {
+        "return": "uploadResumeResponse!",
+        "args": {
+          "userId": "String!"
+        }
+      },
+      "getResumeInfo": {
+        "return": "getResumeInfoResponse!",
+        "args": {
+          "resumeKey": "String!"
+        }
+      },
+      "validateNmlsId": {
+        "return": "NmlsIdValidationResult!",
+        "args": {
+          "nmlsId": "String!",
+          "since": "String"
+        }
+      },
+      "listSequences": {
+        "return": "String!",
+        "args": {
+          "sequenceFilter": "String",
+          "tenantId": "String"
+        }
+      },
+      "readSequence": {
+        "return": "String",
+        "args": {
+          "sequenceId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "listSequenceQueue": {
+        "return": "[SequenceQueue]",
+        "args": {
+          "sequenceQueueFilter": "String"
+        }
+      },
+      "readSequenceQueue": {
+        "return": "SequenceQueue",
+        "args": {
+          "sequenceQueueKey": "String!"
+        }
+      },
+      "searchSequenceQueue": {
+        "return": "[SequenceQueue]",
+        "args": {
+          "sequenceQueueKey": "String"
+        }
+      },
+      "checkPhoneNumberType": {
+        "return": "String",
+        "args": {
+          "phoneNumber": "String"
+        }
+      },
+      "getCreditProfile": {
+        "return": "CreditProfile",
+        "args": {
+          "tenantId": "String!"
+        }
+      },
+      "getCreditUsage": {
+        "return": "String",
+        "args": {
+          "tenantId": "String!"
+        }
+      },
+      "getAllEmailTemplates": {
+        "return": "[EmailTemplate]"
+      },
+      "getEmailSignature": {
+        "return": "EmailSignature"
+      },
+      "listSMSTemplates": {
+        "return": "String!",
+        "args": {
+          "smsTemplateFilter": "String",
+          "tenantId": "String"
+        }
+      },
+      "readSMSTemplate": {
+        "return": "String",
+        "args": {
+          "smsTemplateId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "getContactVolumeReport": {
+        "return": "FullVolumeReport",
+        "args": {
+          "contactId": "String!"
+        }
+      },
+      "readSequenceLockTable": {
+        "return": "String!",
+        "args": {
+          "threadId": "String"
+        }
+      },
+      "filterEmailTemplates": {
+        "return": "[EmailTemplate]",
+        "args": {
+          "templateTitle": "String"
+        }
+      },
+      "listGroupsForUser": {
+        "return": "[CognitoGroups]",
+        "args": {
+          "userNames": "[String]!"
+        }
+      },
+      "getTotalSentSequenceSummary": {
+        "return": "[SequenceSummary]",
+        "args": {
+          "sequenceID": "String!"
+        }
+      },
+      "getOptOutSequenceSummary": {
+        "return": "[SequenceSummary]",
+        "args": {
+          "sequenceID": "String!"
+        }
+      },
+      "getSMSDeliveryTotals": {
+        "return": "SMSDeliveryTotal",
+        "args": {
+          "userID": "String",
+          "sequenceID": "String"
+        }
+      },
+      "mceSanityCheck": {
+        "return": "Boolean!",
+        "args": {
+          "userId": "String"
+        }
+      },
+      "mceFilterContacts": {
+        "return": "FilterContactsResult!",
+        "args": {
+          "page": "Page    filters"
+        }
+      },
+      "getContactActive": {
+        "return": "UserContactActive!",
+        "args": {
+          "contactId": "String!"
+        }
+      }
+    }
+  },
+  "Mutation": {
+    "variable": "type",
+    "fields": {
+      "addReq": {
+        "return": "UserReq",
+        "args": {
+          "title": "String!    summary"
+        }
+      },
+      "addTodo": {
+        "return": "Todo",
+        "args": {
+          "input": "AddTodoInput!"
+        }
+      },
+      "completeTodo": {
+        "return": "History",
+        "args": {
+          "todoId": "String!",
+          "disposition": "String"
+        }
+      },
+      "checkUserMention": {
+        "return": "Boolean!",
+        "args": {
+          "historyId": "String!"
+        }
+      },
+      "addContact": {
+        "return": "UserContact!",
+        "args": {
+          "contact": "ContactInput!"
+        }
+      },
+      "addUserContactSearchFilter": {
+        "return": "UserContactSearchFilter!",
+        "args": {
+          "searchFilter": "UserContactSearchFilterInput!"
+        }
+      },
+      "addReqContactSearchFilter": {
+        "return": "ReqContactSearchFilter!",
+        "args": {
+          "searchFilter": "ReqContactSearchFilterInput!"
+        }
+      },
+      "uploadContactDocument": {
+        "return": "ContactDocument!",
+        "args": {
+          "fileName": "String!    fileType"
+        }
+      },
+      "uploadContactAvatar": {
+        "return": "ContactAvatarUpload!",
+        "args": {
+          "fileName": "String!",
+          "fileType": "String!",
+          "contactId": "String!"
+        }
+      },
+      "uploadUserAvatar": {
+        "return": "ContactAvatarUpload!",
+        "args": {
+          "fileName": "String!",
+          "fileType": "String!",
+          "userId": "String!"
+        }
+      },
+      "deleteContactDocument": {
+        "return": "Boolean",
+        "args": {
+          "contactId": "String!",
+          "documentId": "String!",
+          "reqId": "String"
+        }
+      },
+      "updateUserContactSearchFilter": {
+        "return": "UserContactSearchFilter!",
+        "args": {
+          "id": "String!    filterCriteria"
+        }
+      },
+      "deleteUserContactSearchFilter": {
+        "return": "Boolean",
+        "args": {
+          "id": "String!"
+        }
+      },
+      "updateReqContactSearchFilter": {
+        "return": "ReqContactSearchFilter!",
+        "args": {
+          "id": "String!    reqId"
+        }
+      },
+      "deleteReqContactSearchFilter": {
+        "return": "Boolean",
+        "args": {
+          "id": "String!",
+          "reqId": "String!"
+        }
+      },
+      "shareUserContactSearchFilter": {
+        "return": "[UserContactSearchFilter]!",
+        "args": {
+          "userIds": "[String]    searchFilter"
+        }
+      },
+      "shareReqContactSearchFilter": {
+        "return": "[ReqContactSearchFilter]!",
+        "args": {
+          "userIds": "[String]",
+          "searchFilter": "ReqContactSearchFilterInput!"
+        }
+      },
+      "addContactsToReqs": {
+        "return": "[ContactRequisition!]!",
+        "args": {
+          "contactIds": "[String]",
+          "reqIds": "[String]"
+        }
+      },
+      "shareContactToUser": {
+        "return": "UserContact!",
+        "args": {
+          "contactId": "String",
+          "userId": "String"
+        }
+      },
+      "removeUserFromReq": {
+        "return": "Boolean!",
+        "args": {
+          "userId": "String",
+          "reqId": "String"
+        }
+      },
+      "addUserToReq": {
+        "return": "User!",
+        "args": {
+          "userId": "String!",
+          "reqId": "String!"
+        }
+      },
+      "updateContactPersonalInfo": {
+        "return": "PersonalInfo!",
+        "args": {
+          "contactId": "String!",
+          "info": "PersonalInfoInput!"
+        }
+      },
+      "updateReqContact": {
+        "return": "ReqContact!",
+        "args": {
+          "input": "ReqContactInput",
+          "userId": "String"
+        }
+      },
+      "initContactImport": {
+        "return": "PresignedS3Upload!",
+        "args": {
+          "options": "ContactImportOptionsInput!",
+          "fileType": "String!"
+        }
+      },
+      "initContactExport": {
+        "return": "Boolean!",
+        "args": {
+          "contactIds": "[String]"
+        }
+      },
+      "addNote": {
+        "return": "History!",
+        "args": {
+          "input": "NoteInput!"
+        }
+      },
+      "addTenant": {
+        "return": "Tenant!",
+        "args": {
+          "input": "TenantInput!"
+        }
+      },
+      "addUser": {
+        "return": "User!",
+        "args": {
+          "input": "AddUserInput!"
+        }
+      },
+      "resendUserCode": {
+        "return": "String!",
+        "args": {
+          "input": "ResendUserCodeInput!"
+        }
+      },
+      "updateTodo": {
+        "return": "Todo!",
+        "args": {
+          "input": "UpdateTodoInput!"
+        }
+      },
+      "updateContact": {
+        "return": "Contact!",
+        "args": {
+          "contactId": "String!",
+          "input": "ContactInput!"
+        }
+      },
+      "updateContactBusiness": {
+        "return": "ContactBusiness!",
+        "args": {
+          "contactId": "String!",
+          "input": "ContactBusinessInput!",
+          "isMerge": "Boolean!"
+        }
+      },
+      "createLeadsSearch": {
+        "return": "LeadsSearchResults!",
+        "args": {
+          "leadsCriteria": "LeadsCriteria!"
+        }
+      },
+      "updateLeadMetadata": {
+        "return": "Lead!",
+        "args": {
+          "nmlsId": "String!",
+          "lead": "UpdateLeadInput!"
+        }
+      },
+      "importLeads": {
+        "return": "Boolean!",
+        "args": {
+          "import": "ImportLeadInput!"
+        }
+      },
+      "updateUserInfo": {
+        "return": "User!",
+        "args": {
+          "userId": "String!",
+          "userInput": "UpdateUserInfoInput!"
+        }
+      },
+      "updateReq": {
+        "return": "Requisition!",
+        "args": {
+          "reqId": "String!",
+          "input": "UpdateReqInput!"
+        }
+      },
+      "updateReqOwner": {
+        "return": "Boolean!",
+        "args": {
+          "reqId": "String!",
+          "ownerId": "String!",
+          "firstName": "String!",
+          "lastName": "String!"
+        }
+      },
+      "bulkUpdateReqContacts": {
+        "return": "ContactsUpdated!",
+        "args": {
+          "reqId": "String!    filters"
+        }
+      },
+      "addPlaybookTemplate": {
+        "return": "PlaybookTemplate!",
+        "args": {
+          "tenantId": "String",
+          "playbookTemplateData": "PlaybookTemplateInput!"
+        }
+      },
+      "updatePlaybookTemplate": {
+        "return": "PlaybookTemplate!",
+        "args": {
+          "tenantId": "String    playbookTemplateId"
+        }
+      },
+      "logicalDeletePlaybookTemplate": {
+        "return": "Boolean!",
+        "args": {
+          "tenantId": "String",
+          "playbookTemplateId": "String!"
+        }
+      },
+      "createPlaybookReqContact": {
+        "return": "PlaybookReqContact",
+        "args": {
+          "reqId": "String",
+          "contactId": "String",
+          "playbookTemplateId": "String"
+        }
+      },
+      "updatePlaybookReqContact": {
+        "return": "PlaybookReqContact!",
+        "args": {
+          "reqId": "String    contactId"
+        }
+      },
+      "createPlaybookTemplateReqLink": {
+        "return": "PlaybookTemplateReqLink",
+        "args": {
+          "tenantId": "String",
+          "reqId": "String",
+          "playbookTemplateId": "String"
+        }
+      },
+      "updatePlaybookTemplateReqLink": {
+        "return": "PlaybookTemplateReqLink",
+        "args": {
+          "reqId": "String    playbookTemplateId"
+        }
+      },
+      "deletePlaybookTemplateReqLink": {
+        "return": "Boolean!",
+        "args": {
+          "reqId": "String!"
+        }
+      },
+      "createContactTag": {
+        "return": "ContactTag!",
+        "args": {
+          "tenantId": "String",
+          "contactTagData": "ContactTagInput!",
+          "reqId": "String",
+          "userId": "String"
+        }
+      },
+      "updateContactTag": {
+        "return": "ContactTag!",
+        "args": {
+          "tenantId": "String    contactTagId"
+        }
+      },
+      "deleteContactTag": {
+        "return": "Boolean!",
+        "args": {
+          "tenantId": "String",
+          "contactTagId": "String!",
+          "reqId": "String"
+        }
+      },
+      "disableUser": {
+        "return": "User!",
+        "args": {
+          "tenantId": "String",
+          "userId": "String!",
+          "userName": "String!"
+        }
+      },
+      "enableUser": {
+        "return": "User!",
+        "args": {
+          "tenantId": "String",
+          "userId": "String!",
+          "userName": "String!"
+        }
+      },
+      "reAssignTodos": {
+        "return": "Boolean!",
+        "args": {
+          "oldUserId": "String!",
+          "newUserId": "String!"
+        }
+      },
+      "deleteContact": {
+        "return": "Boolean!",
+        "args": {
+          "contactId": "String!"
+        }
+      },
+      "deleteContactFromReq": {
+        "return": "Boolean!",
+        "args": {
+          "contactId": "String!",
+          "reqId": "String!"
+        }
+      },
+      "createStripePaymentIntentForLead": {
+        "return": "StripePaymentIntent!",
+        "args": {
+          "metadata": "StripePaymentIntentLeadMetadata!"
+        }
+      },
+      "cancelStripePaymentIntent": {
+        "return": "StripePaymentIntent!",
+        "args": {
+          "id": "ID!",
+          "cancellation_reason": "StripePaymentIntentCancellationReason"
+        }
+      },
+      "createNmlsValidation": {
+        "return": "NmlsValidationResult!",
+        "args": {
+          "nmlsId": "String!"
+        }
+      },
+      "importLeadInsight": {
+        "return": "Boolean",
+        "args": {
+          "nmlsId": "String!",
+          "contactId": "String!"
+        }
+      },
+      "updateReqContactTags": {
+        "return": "Boolean!",
+        "args": {
+          "reqId": "String    contactId"
+        }
+      },
+      "setIntegrationKey": {
+        "return": "IntegrationKey!",
+        "args": {
+          "iName": "String!",
+          "apiKey": "String!"
+        }
+      },
+      "deleteIntegrationKey": {
+        "return": "Boolean!",
+        "args": {
+          "iName": "String!"
+        }
+      },
+      "startClick2Call": {
+        "return": "Click2CallResult!",
+        "args": {
+          "agentNumber": "String!",
+          "contactNumber": "String!"
+        }
+      },
+      "setFeatureClick2Call": {
+        "return": "Boolean!",
+        "args": {
+          "tenantId": "String!",
+          "setVal": "Boolean!"
+        }
+      },
+      "addHistory": {
+        "return": "History!",
+        "args": {
+          "input": "HistoryInput!"
+        }
+      },
+      "setFeatureByName": {
+        "return": "Boolean!",
+        "args": {
+          "feature": "String!",
+          "tenantId": "String!",
+          "setVal": "Boolean!"
+        }
+      },
+      "setFeatureByNameForUser": {
+        "return": "Boolean!",
+        "args": {
+          "feature": "String!",
+          "userId": "String!",
+          "setVal": "Boolean!"
+        }
+      },
+      "createReportingTemplate": {
+        "return": "String!",
+        "args": {
+          "reportingTemplateData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "updateReportingTemplate": {
+        "return": "String!",
+        "args": {
+          "reportingTemplateData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "logicalDeleteReportingTemplate": {
+        "return": "Boolean!",
+        "args": {
+          "reportingTemplateId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "setUserSettingKey": {
+        "return": "UserSettingKey!",
+        "args": {
+          "iName": "String!",
+          "settingValue": "String!"
+        }
+      },
+      "deleteUserSettingKey": {
+        "return": "Boolean!",
+        "args": {
+          "iName": "String!"
+        }
+      },
+      "terminateCall": {
+        "return": "String!",
+        "args": {
+          "callServiceId": "String!"
+        }
+      },
+      "transferCall": {
+        "return": "String!",
+        "args": {
+          "callServiceId": "String!",
+          "transferPhone": "String!"
+        }
+      },
+      "createReportObject": {
+        "return": "String!",
+        "args": {
+          "ReportObjectData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "updateReportObject": {
+        "return": "String!",
+        "args": {
+          "ReportObjectData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "logicalDeleteReportObject": {
+        "return": "Boolean!",
+        "args": {
+          "ReportObjectId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "createReportingSnapshot": {
+        "return": "ReportingSnapshot!",
+        "args": {
+          "input": "CreateReportingSnapshotInput!"
+        }
+      },
+      "updateReportingSnapshot": {
+        "return": "ReportingSnapshot!",
+        "args": {
+          "input": "UpdateReportingSnapshotInput!"
+        }
+      },
+      "deleteReportingSnapshot": {
+        "return": "ID!",
+        "args": {
+          "id": "ID!"
+        }
+      },
+      "shareReportingSnapshot": {
+        "return": "ReportingSnapshot!",
+        "args": {
+          "input": "ShareReportingSnapshotInput!"
+        }
+      },
+      "shareReportTemplateToUser": {
+        "return": "String!",
+        "args": {
+          "reportTemplateId": "String",
+          "userId": "String"
+        }
+      },
+      "addProspectBonzoCampaign": {
+        "return": "String!",
+        "args": {
+          "iAPIKeyBONZO": "String!",
+          "bonzoCampaignId": "String",
+          "bonzoContactData": "String"
+        }
+      },
+      "proxyPost": {
+        "return": "String!",
+        "args": {
+          "url": "String!",
+          "headers": "String",
+          "body": "String",
+          "parseBody": "Boolean"
+        }
+      },
+      "configureZaps": {
+        "return": "Zapier!",
+        "args": {
+          "zaps": "[ZapInput]"
+        }
+      },
+      "disconnectZapier": {
+        "return": "Zapier!",
+        "args": {
+          "userId": "String"
+        }
+      },
+      "setSystemKey": {
+        "return": "SystemKey!",
+        "args": {
+          "iName": "String!",
+          "sysKey": "String!"
+        }
+      },
+      "deleteSystemKey": {
+        "return": "Boolean!",
+        "args": {
+          "iName": "String!"
+        }
+      },
+      "sendEmail": {
+        "return": "Boolean!",
+        "args": {
+          "emailObj": "EmailInputTwo!"
+        }
+      },
+      "provisionNumber": {
+        "return": "String!",
+        "args": {
+          "number": "String!"
+        }
+      },
+      "removeNumber": {
+        "return": "String!",
+        "args": {
+          "number": "String!",
+          "numberSid": "String!"
+        }
+      },
+      "sendSMS": {
+        "return": "String!",
+        "args": {
+          "to": "String!    from"
+        }
+      },
+      "buildMMSMediaStorageLocation": {
+        "return": "MMSMedia!",
+        "args": {
+          "fileName": "String!",
+          "fileType": "String!",
+          "mmsMediaDocId": "String"
+        }
+      },
+      "deleteMMSMedia": {
+        "return": "Boolean",
+        "args": {
+          "mmsMediaDocId": "String!"
+        }
+      },
+      "setLiveCounter": {
+        "return": "String",
+        "args": {
+          "newValue": "String!"
+        }
+      },
+      "messageLogUpdated": {
+        "return": "messageLogUpdatedResponse",
+        "args": {
+          "userId": "String!    contactNumber"
+        },
+        "directives": {
+          "aws_cognito_user_pools": true,
+          "aws_api_key": true
+        }
+      },
+      "resizeMMSMediaImages": {
+        "return": "Boolean!",
+        "args": {
+          "mmsMediaDoc": "MMSMediaInput!"
+        }
+      },
+      "deactivateConversation": {
+        "return": "Boolean!",
+        "args": {
+          "number": "String!"
+        }
+      },
+      "setConversationActive": {
+        "return": "Boolean!",
+        "args": {
+          "number": "String!",
+          "contact": "ContactInput"
+        }
+      },
+      "createBonzoWebhook": {
+        "return": "Boolean!",
+        "args": {
+          "apiKey": "String!",
+          "webhookCode": "String!"
+        }
+      },
+      "updatePipeflowSettings": {
+        "return": "Boolean!",
+        "args": {
+          "webhookCode": "String!",
+          "pipeflowSettings": "PipeflowSettingsInput!"
+        }
+      },
+      "changeContactDripCampaign": {
+        "return": "DripCampaignChangeResponse",
+        "args": {
+          "apiKey": "String!    webhookCode"
+        }
+      },
+      "updateUserMetric": {
+        "return": "Boolean!",
+        "args": {
+          "type": "String!",
+          "count": "Int!"
+        }
+      },
+      "updateMessageRead": {
+        "return": "Boolean!",
+        "args": {
+          "agentNumber": "String!",
+          "contactNumber": "String!"
+        }
+      },
+      "updateMessageChainDeleted": {
+        "return": "Boolean!",
+        "args": {
+          "agentNumber": "String!",
+          "contactNumber": "String!"
+        }
+      },
+      "setUserNotificationsKey": {
+        "return": "Boolean!",
+        "args": {
+          "subscription": "String!"
+        }
+      },
+      "deleteUserNotificationsKey": {
+        "return": "Boolean!",
+        "args": {
+          "subscription": "String!"
+        }
+      },
+      "isUserNotificationsKeySet": {
+        "return": "Boolean!",
+        "args": {
+          "subscription": "String!"
+        }
+      },
+      "updateReqContacts": {
+        "return": "Int!",
+        "args": {
+          "reqContacts": "String!",
+          "assignedUser": "UserInput",
+          "reqId": "String!"
+        }
+      },
+      "generateVolumeReport": {
+        "return": "[ContactBusiness]",
+        "args": {
+          "contactId": "String!",
+          "nmlsId": "String!"
+        }
+      },
+      "generateFullVolumeReport": {
+        "return": "FullVolumeReport!",
+        "args": {
+          "contactId": "String!",
+          "nmlsId": "String!",
+          "updateContactRecord": "Boolean"
+        }
+      },
+      "createSequence": {
+        "return": "String!",
+        "args": {
+          "sequenceData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "updateSequence": {
+        "return": "String!",
+        "args": {
+          "sequenceData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "logicalDeleteSequence": {
+        "return": "Boolean!",
+        "args": {
+          "sequenceId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "createNotification": {
+        "return": "Boolean!",
+        "args": {
+          "userId": "String!",
+          "type": "String!",
+          "data": "String!"
+        }
+      },
+      "createSequenceQueue": {
+        "return": "SequenceQueue!",
+        "args": {
+          "sequenceQueueData": "SequenceQueueInput!"
+        }
+      },
+      "updateSequenceQueue": {
+        "return": "SequenceQueue!",
+        "args": {
+          "sequenceQueueData": "SequenceQueueInput!"
+        }
+      },
+      "deleteSequenceQueue": {
+        "return": "Boolean!",
+        "args": {
+          "sequenceQueueKey": "String!"
+        }
+      },
+      "createCreditProfile": {
+        "return": "CreditProfile",
+        "args": {
+          "tenantId": "String!"
+        }
+      },
+      "updateCreditProfile": {
+        "return": "Boolean!",
+        "args": {
+          "tenantId": "String!",
+          "fields": "String!"
+        }
+      },
+      "updateUsageMetrics": {
+        "return": "Boolean!",
+        "args": {
+          "tenantId": "String!",
+          "user": "UserInput!",
+          "usage": "CreditUsageInput!"
+        }
+      },
+      "moSequenceCheck": {
+        "return": "Boolean!",
+        "args": {
+          "consumer": "String!",
+          "agent": "String!"
+        }
+      },
+      "stopRequestProcessing": {
+        "return": "Boolean!",
+        "args": {
+          "consumer": "String!",
+          "agent": "String!"
+        }
+      },
+      "addEmailTemplate": {
+        "return": "EmailTemplate!",
+        "args": {
+          "templateTitle": "String!",
+          "templateBody": "String!"
+        }
+      },
+      "updateEmailTemplate": {
+        "return": "Boolean!",
+        "args": {
+          "templateId": "String!",
+          "templateTitle": "String!",
+          "templateBody": "String!"
+        }
+      },
+      "deleteEmailTemplate": {
+        "return": "Boolean!",
+        "args": {
+          "templateId": "String!"
+        }
+      },
+      "addContactToPipelineFromChrome": {
+        "return": "UserContact",
+        "args": {
+          "contactInfo": "ContactInput!"
+        }
+      },
+      "addEmailSignature": {
+        "return": "Boolean!",
+        "args": {
+          "signature": "String!"
+        }
+      },
+      "createSMSTemplate": {
+        "return": "String!",
+        "args": {
+          "smsTemplateData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "updateSMSTemplate": {
+        "return": "String!",
+        "args": {
+          "smsTemplateData": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "logicalDeleteSMSTemplate": {
+        "return": "Boolean!",
+        "args": {
+          "smsTemplateId": "String!",
+          "tenantId": "String",
+          "systemTarget": "String"
+        }
+      },
+      "createSequenceQueueTestData": {
+        "return": "String!",
+        "args": {
+          "sequenceQueueData": "SequenceQueueInput!",
+          "howMany": "Int!",
+          "target": "String!"
+        }
+      },
+      "setCallForwardingNumber": {
+        "return": "String!",
+        "args": {
+          "smsNumber": "String!",
+          "userNumber": "String!"
+        }
+      },
+      "callForwarding": {
+        "return": "String",
+        "args": {
+          "smsNumber": "String!",
+          "userNumber": "String!"
+        },
+        "directives": {
+          "aws_cognito_user_pools": true,
+          "aws_api_key": true
+        }
+      },
+      "updateContactLastUpdatedAtField": {
+        "return": "Boolean",
+        "args": {
+          "contactId": "String!",
+          "reqId": "String",
+          "isPublic": "String!"
+        }
+      },
+      "addUserToGroup": {
+        "return": "Boolean!",
+        "args": {
+          "userName": "String!",
+          "groupName": "String!"
+        }
+      },
+      "removeUserFromGroup": {
+        "return": "Boolean!",
+        "args": {
+          "userName": "String!",
+          "groupName": "String!"
+        }
+      },
+      "autoLogOutUser": {
+        "return": "AutoLogOutUserResponse",
+        "args": {
+          "userName": "String",
+          "data": "String!",
+          "deviceKey": "String"
+        },
+        "directives": {
+          "aws_cognito_user_pools": true,
+          "aws_api_key": true
+        }
+      },
+      "enableDeviceRememberingForOldUser": {
+        "return": "Boolean!",
+        "args": {
+          "userName": "String!"
+        }
+      },
+      "notifyUserDeviceBeforeLogOut": {
+        "return": "Boolean!",
+        "args": {
+          "deviceKey": "String"
+        }
+      },
+      "notifyUsernameBeforeLogOut": {
+        "return": "Boolean!",
+        "args": {
+          "userName": "String!",
+          "userID": "String!"
+        }
+      },
+      "addContactMCE": {
+        "return": "UserContact!",
+        "args": {
+          "contact": "ContactInput!"
+        }
+      },
+      "addMCEToTenant": {
+        "return": "String!",
+        "args": {
+          "contact": "ContactInput!",
+          "tenantId": "String",
+          "mceId": "String!"
+        }
+      },
+      "addMCEToUser": {
+        "return": "String!",
+        "args": {
+          "contact": "ContactInput!",
+          "userId": "String",
+          "mceId": "String!"
+        }
+      },
+      "addMCEToReq": {
+        "return": "String!",
+        "args": {
+          "contact": "ContactInput!",
+          "reqId": "String!",
+          "mceId": "String!"
+        }
+      },
+      "weeklyTWGProcessing": {
+        "return": "String",
+        "args": {
+          "numberToProcess": "Int",
+          "sort": "String"
+        }
+      },
+      "leadsBuilder": {
+        "return": "String",
+        "args": {
+          "numberToProcess": "Int",
+          "sort": "String"
+        }
+      }
+    }
+  },
+  "AnnualVolumeReport": {
+    "variable": "type",
+    "fields": {
+      "period": {
+        "return": "String"
+      },
+      "endDate": {
+        "return": "String"
+      },
+      "startDate": {
+        "return": "String"
+      },
+      "endMonth": {
+        "return": "Int"
+      },
+      "endYear": {
+        "return": "Int"
+      },
+      "volume": {
+        "return": "Float"
+      },
+      "totalUnits": {
+        "return": "Int"
+      },
+      "avgPerUnit": {
+        "return": "Int"
+      },
+      "purchasePercentage": {
+        "return": "Int"
+      },
+      "productMix": {
+        "return": "ProductMix"
+      },
+      "transactionMix": {
+        "return": "TransactionMix"
+      },
+      "loanTypes": {
+        "return": "LoanTypes"
+      },
+      "topStates": {
+        "return": "[TopState]"
+      },
+      "topLenders": {
+        "return": "[TopState]"
+      },
+      "topOriginators": {
+        "return": "[TopState]"
+      },
+      "topCities": {
+        "return": "[TopState]"
+      },
+      "monthly": {
+        "return": "[MonthlyReport]"
+      },
+      "weekly": {
+        "return": "[WeeklyReport]"
+      }
+    }
+  },
+  "FullVolumeReport": {
+    "variable": "type",
+    "fields": {
+      "lastUpdatedAt": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "report": {
+        "return": "[AnnualVolumeReport]"
+      }
+    }
+  },
+  "DripCampaignChangeResponse": {
+    "variable": "type",
+    "fields": {
+      "success": {
+        "return": "Boolean!"
+      },
+      "createdNew": {
+        "return": "Boolean!"
+      },
+      "message": {
+        "return": "String!"
+      }
+    }
+  },
+  "ZapInput": {
+    "variable": "input",
+    "fields": {
+      "url": {
+        "return": "String!"
+      },
+      "key": {
+        "return": "String!"
+      }
+    }
+  },
+  "Zapier": {
+    "variable": "type",
+    "fields": {
+      "status": {
+        "return": "String"
+      },
+      "userId": {
+        "return": "String"
+      },
+      "url": {
+        "return": "String"
+      },
+      "isAuthenticated": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "Tenant": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "title": {
+        "return": "String!"
+      },
+      "created": {
+        "return": "String"
+      },
+      "lastUpdated": {
+        "return": "String"
+      },
+      "active": {
+        "return": "Boolean!"
+      },
+      "user": {
+        "return": "[User]!"
+      }
+    }
+  },
+  "User": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "emails": {
+        "return": "[Email]!"
+      },
+      "created": {
+        "return": "String"
+      },
+      "active": {
+        "return": "Boolean!"
+      },
+      "username": {
+        "return": "String"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "productivity": {
+        "return": "UserAggs"
+      },
+      "notifications": {
+        "return": "Boolean"
+      },
+      "agentPhone": {
+        "return": "String"
+      },
+      "smsPhone": {
+        "return": "String"
+      },
+      "smsNotify": {
+        "return": "Boolean"
+      },
+      "deviceRemembered": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "UserAggs": {
+    "variable": "type",
+    "fields": {
+      "meetingsScheduled": {
+        "return": "Int"
+      },
+      "meetingsCompleted": {
+        "return": "Int"
+      },
+      "notesAdded": {
+        "return": "Int"
+      },
+      "todosCompleted": {
+        "return": "Int"
+      },
+      "todosOpened": {
+        "return": "Int"
+      }
+    }
+  },
+  "Requisition": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "title": {
+        "return": "String!"
+      },
+      "created": {
+        "return": "String!"
+      },
+      "lastUpdated": {
+        "return": "String"
+      },
+      "address": {
+        "return": "String"
+      },
+      "ownerId": {
+        "return": "String"
+      },
+      "ownerFirst": {
+        "return": "String"
+      },
+      "ownerLast": {
+        "return": "String"
+      },
+      "targetHires": {
+        "return": "Int"
+      },
+      "statistics": {
+        "return": "Statistic"
+      },
+      "summary": {
+        "return": "String"
+      },
+      "status": {
+        "return": "Status"
+      },
+      "openedDate": {
+        "return": "String"
+      },
+      "todos": {
+        "return": "[Todo]"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "ContactStage!"
+      }
+    }
+  },
+  "UserReq": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "title": {
+        "return": "String!"
+      },
+      "created": {
+        "return": "String"
+      },
+      "active": {
+        "return": "Boolean!"
+      },
+      "targetHires": {
+        "return": "Int"
+      },
+      "ownerId": {
+        "return": "String"
+      },
+      "ownerFirst": {
+        "return": "String"
+      },
+      "ownerLast": {
+        "return": "String"
+      },
+      "tenant": {
+        "return": "String"
+      },
+      "status": {
+        "return": "Status"
+      },
+      "todos": {
+        "return": "[Todo]"
+      },
+      "statistics": {
+        "return": "Statistic"
+      },
+      "reqId": {
+        "return": "String!"
+      },
+      "mmAdminOnlyReqId": {
+        "return": "String"
+      }
+    }
+  },
+  "Contact": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "leadsIndex": {
+        "return": "String"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "createdAt": {
+        "return": "String!"
+      },
+      "active": {
+        "return": "Boolean!"
+      },
+      "disabledAt": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "address": {
+        "return": "Address!"
+      },
+      "emails": {
+        "return": "[Email]!"
+      },
+      "phones": {
+        "return": "[Phone]!"
+      },
+      "links": {
+        "return": "[Link]!"
+      },
+      "ownerId": {
+        "return": "String!"
+      },
+      "lastUpdatedAt": {
+        "return": "String!"
+      },
+      "linkedIn": {
+        "return": "String"
+      },
+      "facebook": {
+        "return": "String"
+      },
+      "website": {
+        "return": "String"
+      },
+      "emailDripEnabled": {
+        "return": "Boolean"
+      },
+      "personalInfo": {
+        "return": "PersonalInfo!"
+      },
+      "statistics": {
+        "return": "[ContactBusiness]"
+      },
+      "production": {
+        "return": "[ContactBusiness]"
+      },
+      "tags": {
+        "return": "[ContactTag]!"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "avatarId": {
+        "return": "String"
+      },
+      "twilioLookedUp": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "ContactNameFragment": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "active": {
+        "return": "Boolean"
+      },
+      "stage": {
+        "return": "ContactStage"
+      },
+      "linkedIn": {
+        "return": "String"
+      },
+      "facebook": {
+        "return": "String"
+      },
+      "website": {
+        "return": "String"
+      },
+      "avatarId": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      }
+    }
+  },
+  "ContactBusiness": {
+    "variable": "type",
+    "fields": {
+      "volume": {
+        "return": "Float"
+      },
+      "avgPerUnit": {
+        "return": "Int"
+      },
+      "totalUnits": {
+        "return": "Int"
+      },
+      "purchasePercentage": {
+        "return": "Int"
+      },
+      "period": {
+        "return": "String"
+      },
+      "peroid": {
+        "return": "String"
+      },
+      "productMix": {
+        "return": "ProductMix"
+      },
+      "loanTypes": {
+        "return": "[LoanTypeStats]"
+      },
+      "topCities": {
+        "return": "[TopCity]"
+      },
+      "topLenders": {
+        "return": "[TopCity]"
+      },
+      "transactionMix": {
+        "return": "TransactionMix"
+      },
+      "endMonth": {
+        "return": "Int"
+      },
+      "endYear": {
+        "return": "Int"
+      },
+      "startMonth": {
+        "return": "Int"
+      },
+      "startYear": {
+        "return": "Int"
+      },
+      "isUserInput": {
+        "return": "Boolean"
+      },
+      "isUserImport": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "LoanTypeStats": {
+    "variable": "type",
+    "fields": {
+      "key": {
+        "return": "String"
+      },
+      "volume": {
+        "return": "Int"
+      },
+      "avgPerUnit": {
+        "return": "Int"
+      },
+      "totalUnits": {
+        "return": "Int"
+      }
+    }
+  },
+  "TopCity": {
+    "variable": "type",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "count": {
+        "return": "Int"
+      },
+      "volume": {
+        "return": "Int"
+      }
+    }
+  },
+  "NmlsIdValidationResult": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "ContactDocument": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "documentName": {
+        "return": "String!"
+      },
+      "lastUpdatedAt": {
+        "return": "String!"
+      },
+      "ownerId": {
+        "return": "String!"
+      },
+      "contactId": {
+        "return": "String!"
+      },
+      "reqId": {
+        "return": "String!"
+      },
+      "uploadUrl": {
+        "return": "String!"
+      },
+      "createdAt": {
+        "return": "String!"
+      }
+    }
+  },
+  "MMSMedia": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "documentName": {
+        "return": "String!"
+      },
+      "lastUpdatedAt": {
+        "return": "String!"
+      },
+      "ownerId": {
+        "return": "String!"
+      },
+      "uploadUrl": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String!"
+      },
+      "url": {
+        "return": "String"
+      },
+      "thumbUrl": {
+        "return": "String"
+      },
+      "fileType": {
+        "return": "String"
+      }
+    }
+  },
+  "MMSMediaInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "documentName": {
+        "return": "String!"
+      },
+      "lastUpdatedAt": {
+        "return": "String!"
+      },
+      "ownerId": {
+        "return": "String!"
+      },
+      "uploadUrl": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String!"
+      },
+      "url": {
+        "return": "String"
+      },
+      "thumbUrl": {
+        "return": "String"
+      },
+      "fileType": {
+        "return": "String"
+      }
+    }
+  },
+  "ContactAvatarUpload": {
+    "variable": "type",
+    "fields": {
+      "uploadUrl": {
+        "return": "String!"
+      }
+    }
+  },
+  "ContactDocumentUrl": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "url": {
+        "return": "String!"
+      }
+    }
+  },
+  "ContactAvatarUrl": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "url": {
+        "return": "String"
+      }
+    }
+  },
+  "ContactsUpdated": {
+    "variable": "type",
+    "fields": {
+      "contactsUpdated": {
+        "return": "Int"
+      }
+    }
+  },
+  "PersonalInfo": {
+    "variable": "type",
+    "fields": {
+      "details": {
+        "return": "String"
+      },
+      "birthdate": {
+        "return": "String"
+      },
+      "spouse": {
+        "return": "String"
+      },
+      "kids": {
+        "return": "String"
+      },
+      "anniversary": {
+        "return": "String"
+      },
+      "education": {
+        "return": "String"
+      },
+      "hobbies": {
+        "return": "String"
+      }
+    }
+  },
+  "ReqContact": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "reqName": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "sourceId": {
+        "return": "String!"
+      },
+      "source": {
+        "return": "String!"
+      },
+      "stage": {
+        "return": "ContactStage!"
+      },
+      "stageEnteredDate": {
+        "return": "String"
+      },
+      "score": {
+        "return": "Float!"
+      },
+      "contacted": {
+        "return": "Boolean"
+      },
+      "lastUpdatedAt": {
+        "return": "String!"
+      },
+      "createdAt": {
+        "return": "String!"
+      },
+      "company": {
+        "return": "String"
+      },
+      "contactId": {
+        "return": "String!"
+      },
+      "tags": {
+        "return": "[ContactTag]!"
+      },
+      "assignedUser": {
+        "return": "User"
+      }
+    }
+  },
+  "ContactRequisition": {
+    "variable": "type",
+    "fields": {
+      "contactId": {
+        "return": "ID"
+      },
+      "requisition": {
+        "return": "Requisition"
+      },
+      "stage": {
+        "return": "ContactStage!"
+      },
+      "score": {
+        "return": "Float"
+      },
+      "assignedUser": {
+        "return": "User"
+      }
+    }
+  },
+  "Statistic": {
+    "variable": "type",
+    "fields": {
+      "prospects": {
+        "return": "Int"
+      },
+      "candidates": {
+        "return": "Int"
+      },
+      "meetings": {
+        "return": "Int"
+      },
+      "offers": {
+        "return": "Int"
+      },
+      "hires": {
+        "return": "Int"
+      }
+    }
+  },
+  "FilterContactsResult": {
+    "variable": "type",
+    "fields": {
+      "page": {
+        "return": "PageType!"
+      },
+      "contacts": {
+        "return": "[ContactTableResults]!"
+      }
+    }
+  },
+  "SearchResult": {
+    "variable": "type",
+    "fields": {
+      "contactsByName": {
+        "return": "[ContactTableResults]!"
+      },
+      "contactsByPhone": {
+        "return": "[ContactTableResults]!"
+      },
+      "contactsByEmail": {
+        "return": "[ContactTableResults]!"
+      },
+      "contactsByNmls": {
+        "return": "[ContactTableResults]!"
+      },
+      "requisitions": {
+        "return": "[UserReq]!"
+      },
+      "companies": {
+        "return": "[ContactTableResults]!"
+      },
+      "contactTags": {
+        "return": "[ContactTableResults]!"
+      },
+      "reqTags": {
+        "return": "[ReqContactTableResults]!"
+      }
+    }
+  },
+  "FilterReqsResult": {
+    "variable": "type",
+    "fields": {
+      "page": {
+        "return": "PageType!"
+      },
+      "userReqs": {
+        "return": "[UserReq]!"
+      }
+    }
+  },
+  "FilterReqContactsResult": {
+    "variable": "type",
+    "fields": {
+      "page": {
+        "return": "PageType!"
+      },
+      "contacts": {
+        "return": "[ReqContactTableResults]!"
+      }
+    }
+  },
+  "ContactTableResults": {
+    "variable": "type",
+    "fields": {
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "lastUpdatedAt": {
+        "return": "String"
+      },
+      "active": {
+        "return": "Boolean"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "address": {
+        "return": "Address"
+      },
+      "emails": {
+        "return": "[Email]"
+      },
+      "phones": {
+        "return": "[Phone]"
+      },
+      "links": {
+        "return": "[Link]"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "contactId": {
+        "return": "ID"
+      },
+      "userId": {
+        "return": "ID"
+      },
+      "stage": {
+        "return": "ContactStage"
+      },
+      "stageEnteredDate": {
+        "return": "String"
+      },
+      "source": {
+        "return": "String"
+      },
+      "sourceId": {
+        "return": "String"
+      },
+      "id": {
+        "return": "ID"
+      },
+      "reqName": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "ID"
+      },
+      "nextAction": {
+        "return": "Todo"
+      },
+      "assignedUser": {
+        "return": "User"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "contacted": {
+        "return": "Boolean"
+      },
+      "statistics": {
+        "return": "[ContactBusiness]"
+      },
+      "production": {
+        "return": "[ContactBusiness]"
+      },
+      "title": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "[ContactTag]"
+      }
+    }
+  },
+  "ReqContactTableResults": {
+    "variable": "type",
+    "fields": {
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "lastUpdatedAt": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "source": {
+        "return": "String"
+      },
+      "sourceId": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "ContactStage"
+      },
+      "stageEnteredDate": {
+        "return": "String"
+      },
+      "contacted": {
+        "return": "Boolean"
+      },
+      "address": {
+        "return": "Address"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "phones": {
+        "return": "[Phone]"
+      },
+      "links": {
+        "return": "[Link]"
+      },
+      "reqId": {
+        "return": "ID"
+      },
+      "contactId": {
+        "return": "ID"
+      },
+      "id": {
+        "return": "ID"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "reqName": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "statistics": {
+        "return": "[ContactBusiness]"
+      },
+      "production": {
+        "return": "[ContactBusiness]"
+      },
+      "tags": {
+        "return": "[ContactTag]"
+      },
+      "assignedUser": {
+        "return": "User"
+      }
+    }
+  },
+  "UserContactActive": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "active": {
+        "return": "Boolean!"
+      }
+    }
+  },
+  "UserContact": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "middleName": {
+        "return": "String"
+      },
+      "prefix": {
+        "return": "String"
+      },
+      "suffix": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String!"
+      },
+      "active": {
+        "return": "Boolean!"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "emails": {
+        "return": "[Email]!"
+      },
+      "phones": {
+        "return": "[Phone]!"
+      },
+      "links": {
+        "return": "[Link]!"
+      },
+      "address": {
+        "return": "Address!"
+      },
+      "sourceId": {
+        "return": "String!"
+      },
+      "source": {
+        "return": "String!"
+      },
+      "lastUpdatedAt": {
+        "return": "String!"
+      },
+      "reqs": {
+        "return": "[Requisition!]"
+      },
+      "tags": {
+        "return": "[ContactTag]!"
+      }
+    }
+  },
+  "Todo": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "title": {
+        "return": "String!"
+      },
+      "type": {
+        "return": "String!"
+      },
+      "description": {
+        "return": "String"
+      },
+      "created": {
+        "return": "String"
+      },
+      "lastUpdated": {
+        "return": "String"
+      },
+      "users": {
+        "return": "[User]"
+      },
+      "contacts": {
+        "return": "[ContactNameFragment]"
+      },
+      "todoId": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "location": {
+        "return": "String"
+      },
+      "phone": {
+        "return": "String"
+      },
+      "duration": {
+        "return": "String"
+      },
+      "createdBy": {
+        "return": "String!"
+      },
+      "completedBy": {
+        "return": "String"
+      },
+      "dueOn": {
+        "return": "String!"
+      }
+    }
+  },
+  "History": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "title": {
+        "return": "String!"
+      },
+      "type": {
+        "return": "String!"
+      },
+      "description": {
+        "return": "String"
+      },
+      "users": {
+        "return": "[User]"
+      },
+      "contacts": {
+        "return": "[ContactNameFragment]"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "completedBy": {
+        "return": "User!"
+      },
+      "dueOn": {
+        "return": "String"
+      },
+      "completedDate": {
+        "return": "String"
+      },
+      "isPublic": {
+        "return": "Boolean"
+      },
+      "disposition": {
+        "return": "String"
+      },
+      "noteId": {
+        "return": "String"
+      },
+      "userId": {
+        "return": "String"
+      },
+      "mentionChecked": {
+        "return": "Boolean"
+      },
+      "requisition": {
+        "return": "String"
+      }
+    }
+  },
+  "HistoryResponse": {
+    "variable": "type",
+    "fields": {
+      "page": {
+        "return": "PageType!"
+      },
+      "histories": {
+        "return": "[History]!"
+      },
+      "filters": {
+        "return": "ActivityCriteriaType"
+      }
+    }
+  },
+  "ActivityResponse": {
+    "variable": "type",
+    "fields": {
+      "count": {
+        "return": "Int"
+      },
+      "page": {
+        "return": "PageType!"
+      },
+      "todos": {
+        "return": "[Todo]!"
+      },
+      "filters": {
+        "return": "ActivityCriteriaType"
+      }
+    }
+  },
+  "ActivityCriteriaType": {
+    "variable": "type",
+    "fields": {
+      "title": {
+        "return": "String"
+      },
+      "description": {
+        "return": "String"
+      },
+      "type": {
+        "return": "String"
+      },
+      "participant": {
+        "return": "String"
+      },
+      "Requisition": {
+        "return": "String"
+      },
+      "contact": {
+        "return": "String"
+      },
+      "DueDateStart": {
+        "return": "String"
+      },
+      "DueDateEnd": {
+        "return": "String"
+      },
+      "CompeletedDateStart": {
+        "return": "String"
+      },
+      "CompeletedDateEnd": {
+        "return": "String"
+      },
+      "CompletedBy": {
+        "return": "String"
+      },
+      "todoSection": {
+        "return": "String"
+      },
+      "activity": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "String"
+      }
+    }
+  },
+  "PageType": {
+    "variable": "type",
+    "fields": {
+      "page": {
+        "return": "Int"
+      },
+      "pageSize": {
+        "return": "Int"
+      },
+      "totalSize": {
+        "return": "Int"
+      }
+    }
+  },
+  "Address": {
+    "variable": "type",
+    "fields": {
+      "street": {
+        "return": "String"
+      },
+      "street2": {
+        "return": "String"
+      },
+      "city": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      },
+      "zipCode": {
+        "return": "String"
+      }
+    }
+  },
+  "Phone": {
+    "variable": "type",
+    "fields": {
+      "type": {
+        "return": "String"
+      },
+      "number": {
+        "return": "String"
+      }
+    }
+  },
+  "Email": {
+    "variable": "type",
+    "fields": {
+      "type": {
+        "return": "String"
+      },
+      "address": {
+        "return": "String"
+      }
+    }
+  },
+  "Link": {
+    "variable": "type",
+    "fields": {
+      "type": {
+        "return": "String"
+      },
+      "url": {
+        "return": "String"
+      }
+    }
+  },
+  "PresignedS3Upload": {
+    "variable": "type",
+    "fields": {
+      "uploadId": {
+        "return": "String!"
+      },
+      "presignedUrl": {
+        "return": "String!"
+      },
+      "method": {
+        "return": "String!"
+      }
+    }
+  },
+  "ContactImportStatus": {
+    "variable": "type",
+    "fields": {
+      "uploadId": {
+        "return": "String!"
+      },
+      "status": {
+        "return": "String!"
+      },
+      "completed": {
+        "return": "Boolean!"
+      },
+      "contactsImported": {
+        "return": "Int!"
+      },
+      "inProgress": {
+        "return": "Boolean"
+      },
+      "error": {
+        "return": "String"
+      }
+    }
+  },
+  "LeadsSearchResults": {
+    "variable": "type",
+    "fields": {
+      "executionId": {
+        "return": "String!"
+      },
+      "status": {
+        "return": "String"
+      },
+      "leads": {
+        "return": "[Lead]"
+      },
+      "cursor": {
+        "return": "String"
+      }
+    }
+  },
+  "TWGContactInfo": {
+    "variable": "type",
+    "fields": {
+      "LID": {
+        "return": "String"
+      },
+      "Status": {
+        "return": "String"
+      },
+      "Validated": {
+        "return": "String"
+      },
+      "LOOrgID": {
+        "return": "String"
+      },
+      "LOOrgName": {
+        "return": "String"
+      },
+      "CollectedEmployerCOMPANY": {
+        "return": "String"
+      },
+      "CollectedEmployerCOMPANYID": {
+        "return": "String"
+      },
+      "CollectedEmployerType": {
+        "return": "String"
+      },
+      "CollectedEmployerAddress": {
+        "return": "String"
+      },
+      "CollectedEmployerCity": {
+        "return": "String"
+      },
+      "CollectedEmployerState": {
+        "return": "String"
+      },
+      "CollectedEmployerZip": {
+        "return": "String"
+      },
+      "CollectedOfficePhone": {
+        "return": "String"
+      },
+      "CollectedOfficePhoneExt": {
+        "return": "String"
+      },
+      "CollectedCellPhone": {
+        "return": "String"
+      },
+      "CollectedWorkEmail": {
+        "return": "String"
+      },
+      "CollectedPersonalEmail": {
+        "return": "String"
+      },
+      "CollectedEmployerWebsite": {
+        "return": "String"
+      },
+      "CollectedLOWebSite": {
+        "return": "String"
+      },
+      "CollectedLinkedin": {
+        "return": "String"
+      },
+      "CollectedTwitter": {
+        "return": "String"
+      },
+      "CollectedFacebook": {
+        "return": "String"
+      },
+      "CollectedOther": {
+        "return": "String"
+      },
+      "ModiType": {
+        "return": "String"
+      }
+    }
+  },
+  "LeadLicense": {
+    "variable": "type",
+    "fields": {
+      "Status": {
+        "return": "String"
+      },
+      "StatusDate": {
+        "return": "String"
+      },
+      "LicenseNumber": {
+        "return": "String"
+      },
+      "IsAuthorized": {
+        "return": "String"
+      },
+      "IssueDate": {
+        "return": "String"
+      },
+      "Regulator": {
+        "return": "String"
+      },
+      "RenewedThrough": {
+        "return": "String"
+      },
+      "LicenseID": {
+        "return": "String"
+      },
+      "LicenseType": {
+        "return": "String"
+      }
+    }
+  },
+  "UserContactSearchFilter": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      },
+      "filterCriteria": {
+        "return": "[QueryStringRawContactFilter]"
+      }
+    }
+  },
+  "UserContactFilter": {
+    "variable": "type",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "lastUpdatedAt": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "city": {
+        "return": "String"
+      },
+      "mobileSearch": {
+        "return": "String"
+      },
+      "primaryPhone": {
+        "return": "String"
+      },
+      "secondaryPhone": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "dateCreated": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "String"
+      },
+      "dateCreatedStart": {
+        "return": "String"
+      },
+      "dateCreatedEnd": {
+        "return": "String"
+      },
+      "lastUpdatedAtStart": {
+        "return": "String"
+      },
+      "lastUpdatedAtEnd": {
+        "return": "String"
+      }
+    }
+  },
+  "ReqContactSearchFilter": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      },
+      "filterCriteria": {
+        "return": "[QueryStringRawContactFilter]"
+      }
+    }
+  },
+  "ReqContactFilterCriteria": {
+    "variable": "type",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "source": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "String"
+      },
+      "score": {
+        "return": "Float"
+      },
+      "contacted": {
+        "return": "Boolean"
+      },
+      "lastUpdatedAt": {
+        "return": "String"
+      },
+      "primaryPhone": {
+        "return": "String"
+      },
+      "secondaryPhone": {
+        "return": "String"
+      },
+      "city": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "dateCreated": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "String"
+      },
+      "stageEnteredDateStart": {
+        "return": "String"
+      },
+      "stageEnteredDateEnd": {
+        "return": "String"
+      },
+      "daysOfStage": {
+        "return": "String"
+      },
+      "dateCreatedStart": {
+        "return": "String"
+      },
+      "dateCreatedEnd": {
+        "return": "String"
+      },
+      "lastUpdatedAtStart": {
+        "return": "String"
+      },
+      "lastUpdatedAtEnd": {
+        "return": "String"
+      }
+    }
+  },
+  "PlaybookNote": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "content": {
+        "return": "String"
+      },
+      "by": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      },
+      "modifiedDate": {
+        "return": "String"
+      },
+      "modifiedAt": {
+        "return": "String"
+      }
+    }
+  },
+  "PlaybookTask": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "color": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "notes": {
+        "return": "[PlaybookNote!]"
+      },
+      "status": {
+        "return": "PlaybookItemStatus"
+      },
+      "dueDSE": {
+        "return": "Int!"
+      },
+      "weight": {
+        "return": "Int!"
+      },
+      "assignedTo": {
+        "return": "[String]"
+      }
+    }
+  },
+  "PlaybookStage": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "tasks": {
+        "return": "[PlaybookTask!]"
+      }
+    }
+  },
+  "PlaybookCategory": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "title": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "stages": {
+        "return": "[PlaybookStage!]"
+      }
+    }
+  },
+  "PlaybookTemplate": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "title": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "version": {
+        "return": "[String]"
+      },
+      "categories": {
+        "return": "[PlaybookCategory!]"
+      },
+      "createdBy": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      },
+      "modifiedDate": {
+        "return": "String"
+      },
+      "tenantId": {
+        "return": "String!"
+      },
+      "order": {
+        "return": "Int"
+      }
+    }
+  },
+  "PlaybookReqContact": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "playbookTemplateId": {
+        "return": "String"
+      },
+      "playbookObj": {
+        "return": "PlaybookTemplate"
+      },
+      "createdBy": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      },
+      "modifiedDate": {
+        "return": "String"
+      }
+    }
+  },
+  "PlaybookTemplateReqLink": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "playbookTemplateId": {
+        "return": "String!"
+      },
+      "reqId": {
+        "return": "String"
+      }
+    }
+  },
+  "ContactTag": {
+    "variable": "type",
+    "fields": {
+      "tagId": {
+        "return": "String!"
+      },
+      "name": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "createdBy": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      },
+      "modifiedDate": {
+        "return": "String"
+      },
+      "tenantId": {
+        "return": "String!"
+      },
+      "order": {
+        "return": "Int"
+      }
+    }
+  },
+  "listMessageConversationResult": {
+    "variable": "type",
+    "fields": {
+      "Count": {
+        "return": "Int"
+      },
+      "ScannedCount": {
+        "return": "Int"
+      },
+      "LastEvaluatedKey": {
+        "return": "normalKey"
+      },
+      "Items": {
+        "return": "[ConversationTarget]"
+      }
+    }
+  },
+  "normalKey": {
+    "variable": "type",
+    "fields": {
+      "pKey": {
+        "return": "String"
+      },
+      "rKey": {
+        "return": "String"
+      }
+    }
+  },
+  "ConversationTarget": {
+    "variable": "type",
+    "fields": {
+      "contactNumber": {
+        "return": "String"
+      },
+      "created": {
+        "return": "String"
+      },
+      "contact": {
+        "return": "ContactNameFragment"
+      },
+      "read": {
+        "return": "Boolean"
+      },
+      "chainDeleted": {
+        "return": "Boolean"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "avatarURL": {
+        "return": "String"
+      }
+    }
+  },
+  "PlaybookItemStatus": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "Status": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "PhoneTypes": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "EmailTypes": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "ContactStage": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "ContactImportType": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "UserInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "ContactStage"
+      }
+    }
+  },
+  "TWGContactInfoInput": {
+    "variable": "input",
+    "fields": {
+      "LID": {
+        "return": "String"
+      },
+      "Status": {
+        "return": "String"
+      },
+      "Validated": {
+        "return": "String"
+      },
+      "LOOrgID": {
+        "return": "String"
+      },
+      "LOOrgName": {
+        "return": "String"
+      },
+      "CollectedEmployerCOMPANY": {
+        "return": "String"
+      },
+      "CollectedEmployerCOMPANYID": {
+        "return": "String"
+      },
+      "CollectedEmployerType": {
+        "return": "String"
+      },
+      "CollectedEmployerAddress": {
+        "return": "String"
+      },
+      "CollectedEmployerCity": {
+        "return": "String"
+      },
+      "CollectedEmployerState": {
+        "return": "String"
+      },
+      "CollectedEmployerZip": {
+        "return": "String"
+      },
+      "CollectedOfficePhone": {
+        "return": "String"
+      },
+      "CollectedOfficePhoneExt": {
+        "return": "String"
+      },
+      "CollectedCellPhone": {
+        "return": "String"
+      },
+      "CollectedWorkEmail": {
+        "return": "String"
+      },
+      "CollectedPersonalEmail": {
+        "return": "String"
+      },
+      "CollectedEmployerWebsite": {
+        "return": "String"
+      },
+      "CollectedLOWebSite": {
+        "return": "String"
+      },
+      "CollectedLinkedin": {
+        "return": "String"
+      },
+      "CollectedTwitter": {
+        "return": "String"
+      },
+      "CollectedFacebook": {
+        "return": "String"
+      },
+      "CollectedOther": {
+        "return": "String"
+      },
+      "ModiType": {
+        "return": "String"
+      }
+    }
+  },
+  "ContactInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "middleName": {
+        "return": "String"
+      },
+      "prefix": {
+        "return": "String"
+      },
+      "suffix": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "emails": {
+        "return": "[EmailInput]"
+      },
+      "phones": {
+        "return": "[PhoneInput]"
+      },
+      "links": {
+        "return": "[LinkInput]"
+      },
+      "title": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "address": {
+        "return": "AddressInput"
+      },
+      "linkedIn": {
+        "return": "String"
+      },
+      "facebook": {
+        "return": "String"
+      },
+      "website": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "[ContactTagInput]"
+      },
+      "isCompanyContact": {
+        "return": "Boolean"
+      },
+      "avatarId": {
+        "return": "String"
+      },
+      "userId": {
+        "return": "String"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "duplicate": {
+        "return": "String"
+      },
+      "twilioLookedUp": {
+        "return": "Boolean"
+      },
+      "TWGContactInfo": {
+        "return": "TWGContactInfoInput"
+      }
+    }
+  },
+  "ContactBusinessInput": {
+    "variable": "input",
+    "fields": {
+      "volume": {
+        "return": "Int"
+      },
+      "avgPerUnit": {
+        "return": "Int"
+      },
+      "totalUnits": {
+        "return": "Int"
+      },
+      "purchasePercentage": {
+        "return": "Int"
+      },
+      "period": {
+        "return": "String!"
+      },
+      "peroid": {
+        "return": "String!"
+      },
+      "productMix": {
+        "return": "ProductMixInput"
+      },
+      "isUserInput": {
+        "return": "Boolean"
+      },
+      "isUserImport": {
+        "return": "Boolean"
+      },
+      "endMonth": {
+        "return": "Int"
+      },
+      "endYear": {
+        "return": "Int"
+      }
+    }
+  },
+  "ProductMixInput": {
+    "variable": "input",
+    "fields": {
+      "conventional": {
+        "return": "Int"
+      },
+      "government": {
+        "return": "Int"
+      },
+      "nonConforming": {
+        "return": "Int"
+      },
+      "other": {
+        "return": "Int"
+      }
+    }
+  },
+  "ContactFilter": {
+    "variable": "input",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "lastUpdatedAt": {
+        "return": "String"
+      },
+      "ids": {
+        "return": "[String]"
+      },
+      "company": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "city": {
+        "return": "String"
+      },
+      "mobileSearch": {
+        "return": "String"
+      },
+      "primaryPhone": {
+        "return": "String"
+      },
+      "secondaryPhone": {
+        "return": "String"
+      },
+      "primaryEmail": {
+        "return": "String"
+      },
+      "secondaryEmail": {
+        "return": "String"
+      },
+      "email": {
+        "return": "String"
+      },
+      "phone": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "dateCreated": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "String"
+      },
+      "dateCreatedStart": {
+        "return": "String"
+      },
+      "dateCreatedEnd": {
+        "return": "String"
+      },
+      "lastUpdatedAtStart": {
+        "return": "String"
+      },
+      "lastUpdatedAtEnd": {
+        "return": "String"
+      }
+    }
+  },
+  "QueryStringContactFilter": {
+    "variable": "input",
+    "fields": {
+      "query": {
+        "return": "String"
+      },
+      "options": {
+        "return": "QueryStringOptions"
+      },
+      "strict": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "QueryStringRawContactFilter": {
+    "variable": "type",
+    "fields": {
+      "displayName": {
+        "return": "String"
+      },
+      "key": {
+        "return": "String"
+      },
+      "type": {
+        "return": "String"
+      },
+      "value": {
+        "return": "String"
+      }
+    }
+  },
+  "QueryStringRawContactFilterInput": {
+    "variable": "input",
+    "fields": {
+      "displayName": {
+        "return": "String"
+      },
+      "key": {
+        "return": "String"
+      },
+      "type": {
+        "return": "String"
+      },
+      "value": {
+        "return": "String"
+      }
+    }
+  },
+  "QueryStringOptions": {
+    "variable": "input",
+    "fields": {
+      "defaultfield": {
+        "return": "String"
+      },
+      "fields": {
+        "return": "[String]"
+      },
+      "allowleadingwildcard": {
+        "return": "Boolean"
+      },
+      "analyzewildcard": {
+        "return": "Boolean"
+      },
+      "autogeneratesynonymsphrasequery": {
+        "return": "Boolean"
+      },
+      "boost": {
+        "return": "Float"
+      },
+      "defaultoperator": {
+        "return": "String"
+      },
+      "enablepositionincrements": {
+        "return": "Boolean"
+      },
+      "fuzziness": {
+        "return": "String"
+      },
+      "fuzzymaxexpansions": {
+        "return": "Int"
+      },
+      "fuzzyprefixlength": {
+        "return": "Int"
+      },
+      "fuzzytranspositions": {
+        "return": "Boolean"
+      },
+      "lenient": {
+        "return": "Boolean"
+      },
+      "maxdeterminizedstates": {
+        "return": "Int"
+      },
+      "minimumshouldmatch": {
+        "return": "String"
+      },
+      "quoteanalyzer": {
+        "return": "String"
+      },
+      "phraseslop": {
+        "return": "Int"
+      },
+      "quotefieldsuffix": {
+        "return": "String"
+      },
+      "rewrite": {
+        "return": "String"
+      },
+      "timezone": {
+        "return": "String"
+      },
+      "allfields": {
+        "return": "Boolean"
+      },
+      "flags": {
+        "return": "String"
+      }
+    }
+  },
+  "UserContactSearchFilterInput": {
+    "variable": "input",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "filterCriteria": {
+        "return": "[QueryStringRawContactFilterInput]"
+      }
+    }
+  },
+  "ReqContactSearchFilterInput": {
+    "variable": "input",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "filterCriteria": {
+        "return": "[QueryStringRawContactFilterInput]"
+      }
+    }
+  },
+  "PersonalInfoInput": {
+    "variable": "input",
+    "fields": {
+      "details": {
+        "return": "String"
+      },
+      "birthdate": {
+        "return": "String"
+      },
+      "spouse": {
+        "return": "String"
+      },
+      "kids": {
+        "return": "String"
+      },
+      "anniversary": {
+        "return": "String"
+      },
+      "education": {
+        "return": "String"
+      },
+      "hobbies": {
+        "return": "String"
+      }
+    }
+  },
+  "EmailInput": {
+    "variable": "input",
+    "fields": {
+      "type": {
+        "return": "String"
+      },
+      "address": {
+        "return": "String"
+      }
+    }
+  },
+  "PhoneInput": {
+    "variable": "input",
+    "fields": {
+      "type": {
+        "return": "String"
+      },
+      "number": {
+        "return": "String"
+      }
+    }
+  },
+  "LinkInput": {
+    "variable": "input",
+    "fields": {
+      "type": {
+        "return": "String"
+      },
+      "url": {
+        "return": "String"
+      }
+    }
+  },
+  "AddressInput": {
+    "variable": "input",
+    "fields": {
+      "street": {
+        "return": "String"
+      },
+      "street2": {
+        "return": "String"
+      },
+      "city": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      },
+      "zipCode": {
+        "return": "String"
+      }
+    }
+  },
+  "ReqContactInput": {
+    "variable": "input",
+    "fields": {
+      "contactId": {
+        "return": "String!"
+      },
+      "reqId": {
+        "return": "String!"
+      },
+      "stage": {
+        "return": "ContactStage"
+      },
+      "stageEnteredDate": {
+        "return": "String"
+      },
+      "contacted": {
+        "return": "Boolean"
+      },
+      "assignedUser": {
+        "return": "UserInput"
+      }
+    }
+  },
+  "ReqContactFilter": {
+    "variable": "input",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "source": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "String"
+      },
+      "score": {
+        "return": "Float"
+      },
+      "contacted": {
+        "return": "Boolean"
+      },
+      "lastUpdatedAt": {
+        "return": "String"
+      },
+      "primaryPhone": {
+        "return": "String"
+      },
+      "secondaryPhone": {
+        "return": "String"
+      },
+      "city": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "dateCreated": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "String"
+      },
+      "stageEnteredDateStart": {
+        "return": "String"
+      },
+      "stageEnteredDateEnd": {
+        "return": "String"
+      },
+      "stageDateRange": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "reqName": {
+        "return": "String"
+      },
+      "daysOfStage": {
+        "return": "String"
+      },
+      "daysOfStageOperator": {
+        "return": "String"
+      },
+      "dateCreatedStart": {
+        "return": "String"
+      },
+      "dateCreatedEnd": {
+        "return": "String"
+      },
+      "lastUpdatedAtStart": {
+        "return": "String"
+      },
+      "lastUpdatedAtEnd": {
+        "return": "String"
+      },
+      "assignedUser": {
+        "return": "String"
+      }
+    }
+  },
+  "NoteInput": {
+    "variable": "input",
+    "fields": {
+      "contactId": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "note": {
+        "return": "String!"
+      },
+      "isPublic": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "HistoryInput": {
+    "variable": "input",
+    "fields": {
+      "type": {
+        "return": "String"
+      },
+      "contactId": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "userId": {
+        "return": "String"
+      },
+      "note": {
+        "return": "String!"
+      },
+      "isPublic": {
+        "return": "Boolean"
+      },
+      "analytics": {
+        "return": "String"
+      }
+    }
+  },
+  "TenantInput": {
+    "variable": "input",
+    "fields": {
+      "title": {
+        "return": "String!"
+      },
+      "description": {
+        "return": "String"
+      },
+      "address": {
+        "return": "AddressInput"
+      },
+      "stripeSubId": {
+        "return": "String!"
+      }
+    }
+  },
+  "AddUserInput": {
+    "variable": "input",
+    "fields": {
+      "tenantId": {
+        "return": "String!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "email": {
+        "return": "String!"
+      },
+      "workPhone": {
+        "return": "String"
+      },
+      "cellPhone": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "workAddress": {
+        "return": "AddressInput"
+      }
+    }
+  },
+  "ResendUserCodeInput": {
+    "variable": "input",
+    "fields": {
+      "email": {
+        "return": "String!"
+      }
+    }
+  },
+  "AddTodoInput": {
+    "variable": "input",
+    "fields": {
+      "title": {
+        "return": "String!"
+      },
+      "type": {
+        "return": "String!"
+      },
+      "description": {
+        "return": "String"
+      },
+      "users": {
+        "return": "[UserInput]"
+      },
+      "contacts": {
+        "return": "[UserInput]"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "location": {
+        "return": "String"
+      },
+      "phone": {
+        "return": "String"
+      },
+      "duration": {
+        "return": "String"
+      },
+      "createdBy": {
+        "return": "String!"
+      },
+      "dueOn": {
+        "return": "String!"
+      },
+      "sendInvite": {
+        "return": "Boolean"
+      },
+      "isEmailAuthorized": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "UpdateTodoInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "title": {
+        "return": "String"
+      },
+      "description": {
+        "return": "String"
+      },
+      "type": {
+        "return": "String"
+      },
+      "location": {
+        "return": "String"
+      },
+      "phone": {
+        "return": "String"
+      },
+      "duration": {
+        "return": "String"
+      },
+      "dueOn": {
+        "return": "String"
+      },
+      "users": {
+        "return": "[UserInput]"
+      },
+      "contacts": {
+        "return": "[UserInput]"
+      },
+      "sendInvite": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "LeadsCriteria": {
+    "variable": "input",
+    "fields": {
+      "tenantId": {
+        "return": "String!"
+      },
+      "userId": {
+        "return": "String!"
+      },
+      "requisitionId": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      },
+      "county": {
+        "return": "String"
+      },
+      "purchaseHeavy": {
+        "return": "Boolean"
+      },
+      "conventionalHeavy": {
+        "return": "Boolean"
+      },
+      "minVolume": {
+        "return": "Int"
+      },
+      "maxVolume": {
+        "return": "Int"
+      },
+      "nmlsId": {
+        "return": "String"
+      },
+      "companyNmlsId": {
+        "return": "String"
+      },
+      "branchState": {
+        "return": "String"
+      },
+      "regulator": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      }
+    }
+  },
+  "UpdateLeadInput": {
+    "variable": "input",
+    "fields": {
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "cellPhone": {
+        "return": "String"
+      },
+      "city": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "county": {
+        "return": "String"
+      },
+      "email": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "workPhone": {
+        "return": "String"
+      },
+      "website": {
+        "return": "String"
+      },
+      "state": {
+        "return": "String"
+      }
+    }
+  },
+  "UpdateUserInfoInput": {
+    "variable": "input",
+    "fields": {
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "emails": {
+        "return": "[EmailInput]"
+      },
+      "notifications": {
+        "return": "Boolean"
+      },
+      "agentPhone": {
+        "return": "String"
+      },
+      "smsPhone": {
+        "return": "String"
+      },
+      "smsNotify": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "ImportLeadInput": {
+    "variable": "input",
+    "fields": {
+      "executionId": {
+        "return": "String!"
+      },
+      "nmlsIds": {
+        "return": "[String!]!"
+      }
+    }
+  },
+  "ReqFilter": {
+    "variable": "input",
+    "fields": {
+      "title": {
+        "return": "String"
+      },
+      "status": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      },
+      "owner": {
+        "return": "String"
+      },
+      "prospectsOperator": {
+        "return": "String"
+      },
+      "prospectsNumber": {
+        "return": "String"
+      },
+      "candidatesOperator": {
+        "return": "String"
+      },
+      "candidatesNumber": {
+        "return": "String"
+      },
+      "meetingsOperator": {
+        "return": "String"
+      },
+      "meetingsNumber": {
+        "return": "String"
+      },
+      "offersOperator": {
+        "return": "String"
+      },
+      "offersNumber": {
+        "return": "String"
+      },
+      "hiresOperator": {
+        "return": "String"
+      },
+      "hiresNumber": {
+        "return": "String"
+      },
+      "dateOperator": {
+        "return": "String"
+      },
+      "dateValue": {
+        "return": "String"
+      }
+    }
+  },
+  "UpdateReqInput": {
+    "variable": "input",
+    "fields": {
+      "title": {
+        "return": "String"
+      },
+      "summary": {
+        "return": "String"
+      },
+      "status": {
+        "return": "Status"
+      }
+    }
+  },
+  "ActivityCriteria": {
+    "variable": "input",
+    "fields": {
+      "title": {
+        "return": "String"
+      },
+      "description": {
+        "return": "String"
+      },
+      "type": {
+        "return": "String"
+      },
+      "participant": {
+        "return": "String"
+      },
+      "requisition": {
+        "return": "String"
+      },
+      "contact": {
+        "return": "String"
+      },
+      "dueDateStart": {
+        "return": "String"
+      },
+      "dueDateEnd": {
+        "return": "String"
+      },
+      "compeletedDateStart": {
+        "return": "String"
+      },
+      "compeletedDateEnd": {
+        "return": "String"
+      },
+      "completedBy": {
+        "return": "String"
+      },
+      "todoSection": {
+        "return": "String"
+      },
+      "activity": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "String"
+      }
+    }
+  },
+  "Page": {
+    "variable": "input",
+    "fields": {
+      "page": {
+        "return": "Int"
+      },
+      "pageSize": {
+        "return": "Int"
+      },
+      "totalSize": {
+        "return": "Int"
+      }
+    }
+  },
+  "SortOption": {
+    "variable": "input",
+    "fields": {
+      "field": {
+        "return": "String"
+      },
+      "direction": {
+        "return": "String"
+      }
+    }
+  },
+  "NewSortOption": {
+    "variable": "input",
+    "fields": {
+      "field": {
+        "return": "String!"
+      },
+      "options": {
+        "return": "NewSortOptionsOptions"
+      }
+    }
+  },
+  "NewSortOptionsOptions": {
+    "variable": "input",
+    "fields": {
+      "order": {
+        "return": "String!"
+      },
+      "mode": {
+        "return": "String"
+      },
+      "nested": {
+        "return": "NestedSortOptions"
+      }
+    }
+  },
+  "NestedSortOptions": {
+    "variable": "input",
+    "fields": {
+      "path": {
+        "return": "String"
+      },
+      "filter": {
+        "return": "FilterTerms"
+      }
+    }
+  },
+  "FilterTerms": {
+    "variable": "input",
+    "fields": {
+      "term": {
+        "return": "Term"
+      }
+    }
+  },
+  "Term": {
+    "variable": "input",
+    "fields": {
+      "production": {
+        "return": "String"
+      }
+    }
+  },
+  "PlaybookTemplateFilter": {
+    "variable": "input",
+    "fields": {
+      "title": {
+        "return": "String"
+      },
+      "status": {
+        "return": "String"
+      }
+    }
+  },
+  "PlaybookNoteInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "content": {
+        "return": "String"
+      },
+      "by": {
+        "return": "String"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "modifiedAt": {
+        "return": "String"
+      }
+    }
+  },
+  "PlaybookTaskInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "color": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "notes": {
+        "return": "[PlaybookNoteInput!]"
+      },
+      "status": {
+        "return": "PlaybookItemStatus"
+      },
+      "dueDSE": {
+        "return": "Int!"
+      },
+      "weight": {
+        "return": "Int!"
+      },
+      "assignedTo": {
+        "return": "[String!]"
+      }
+    }
+  },
+  "PlaybookStageInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "tasks": {
+        "return": "[PlaybookTaskInput!]"
+      }
+    }
+  },
+  "PlaybookCategoryInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "stages": {
+        "return": "[PlaybookStageInput!]"
+      }
+    }
+  },
+  "PlaybookTemplateInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "categories": {
+        "return": "[PlaybookCategoryInput!]"
+      },
+      "order": {
+        "return": "Int"
+      }
+    }
+  },
+  "PlaybookReqContactInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "playbookTemplateId": {
+        "return": "String"
+      },
+      "playbookObj": {
+        "return": "PlaybookTemplateInput"
+      }
+    }
+  },
+  "PlaybookTemplateReqLinkInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "playbookTemplateId": {
+        "return": "String"
+      }
+    }
+  },
+  "ContactTagInput": {
+    "variable": "input",
+    "fields": {
+      "tagId": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      },
+      "order": {
+        "return": "Int"
+      }
+    }
+  },
+  "StripePaymentIntent": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "amount": {
+        "return": "Int!"
+      },
+      "clientsecret": {
+        "return": "ID!"
+      },
+      "card": {
+        "return": "StripeCard"
+      }
+    }
+  },
+  "StripeCard": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "brand": {
+        "return": "String!"
+      },
+      "expmonth": {
+        "return": "String!"
+      },
+      "expyear": {
+        "return": "String!"
+      },
+      "last4": {
+        "return": "String!"
+      }
+    }
+  },
+  "StripePaymentIntentLeadMetadata": {
+    "variable": "input",
+    "fields": {
+      "nmlsId": {
+        "return": "ID!"
+      },
+      "contactId": {
+        "return": "ID!"
+      }
+    }
+  },
+  "StripePaymentIntentCancellationReason": {
+    "variable": "enum",
+    "fields": {}
+  },
+  "NmlsValidationResult": {
+    "variable": "type",
+    "fields": {
+      "executionId": {
+        "return": "String!"
+      },
+      "status": {
+        "return": "String!"
+      },
+      "result": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "IntegrationKey": {
+    "variable": "type",
+    "fields": {
+      "apiKey": {
+        "return": "String!"
+      },
+      "iName": {
+        "return": "String!"
+      },
+      "webhookCode": {
+        "return": "String"
+      },
+      "createdBy": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      },
+      "modifiedDate": {
+        "return": "String"
+      }
+    }
+  },
+  "SystemKey": {
+    "variable": "type",
+    "fields": {
+      "sysKey": {
+        "return": "String!"
+      },
+      "iName": {
+        "return": "String"
+      },
+      "createdBy": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      },
+      "modifiedDate": {
+        "return": "String"
+      }
+    }
+  },
+  "UserSettingKey": {
+    "variable": "type",
+    "fields": {
+      "settingValue": {
+        "return": "String!"
+      },
+      "iName": {
+        "return": "String!"
+      },
+      "createdBy": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      },
+      "modifiedDate": {
+        "return": "String"
+      }
+    }
+  },
+  "Click2CallResult": {
+    "variable": "type",
+    "fields": {
+      "msg": {
+        "return": "String"
+      },
+      "sid": {
+        "return": "String"
+      },
+      "parentSid": {
+        "return": "String"
+      },
+      "dateCreated": {
+        "return": "String"
+      },
+      "dateUpdated": {
+        "return": "String"
+      },
+      "to": {
+        "return": "String"
+      },
+      "from": {
+        "return": "String"
+      },
+      "contactNumber": {
+        "return": "String"
+      }
+    }
+  },
+  "VerifyCallerIdResult": {
+    "variable": "type",
+    "fields": {
+      "msg": {
+        "return": "String"
+      },
+      "validationCode": {
+        "return": "String"
+      },
+      "callSid": {
+        "return": "String"
+      },
+      "phoneNumber": {
+        "return": "String"
+      }
+    }
+  },
+  "ESFilterInput": {
+    "variable": "input",
+    "fields": {
+      "field": {
+        "return": "String"
+      },
+      "value": {
+        "return": "[String]"
+      },
+      "valueType": {
+        "return": "String"
+      },
+      "qualifier": {
+        "return": "String"
+      },
+      "bool": {
+        "return": "String"
+      }
+    }
+  },
+  "ESFilter": {
+    "variable": "type",
+    "fields": {
+      "field": {
+        "return": "String"
+      },
+      "value": {
+        "return": "[String]"
+      },
+      "valueType": {
+        "return": "String"
+      },
+      "qualifier": {
+        "return": "String"
+      },
+      "bool": {
+        "return": "String"
+      }
+    }
+  },
+  "ReportingSnapshot": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "createdBy": {
+        "return": "ID"
+      },
+      "modifiedAt": {
+        "return": "String"
+      },
+      "modifiedBy": {
+        "return": "ID"
+      },
+      "name": {
+        "return": "String"
+      },
+      "password": {
+        "return": "String"
+      },
+      "sharedWithPublic": {
+        "return": "ReportingSnapshotPublicLink"
+      },
+      "sharedWithEmails": {
+        "return": "[ReportingSnapshotEmailLink!]!"
+      },
+      "sharedWithUsers": {
+        "return": "[ID!]!"
+      },
+      "downloadUrl": {
+        "return": "String"
+      },
+      "uploadUrl": {
+        "return": "String"
+      }
+    }
+  },
+  "ReportingSnapshotVersion": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "modifiedAt": {
+        "return": "String!"
+      },
+      "modifiedBy": {
+        "return": "ID!"
+      },
+      "size": {
+        "return": "Int!"
+      },
+      "downloadUrl": {
+        "return": "String!"
+      }
+    }
+  },
+  "ReportingSnapshotEmailLink": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "createdAt": {
+        "return": "String!"
+      },
+      "createdBy": {
+        "return": "ID!"
+      },
+      "modifiedAt": {
+        "return": "String!"
+      },
+      "path": {
+        "return": "String!"
+      },
+      "email": {
+        "return": "String!"
+      },
+      "hits": {
+        "return": "Int!"
+      }
+    }
+  },
+  "ReportingSnapshotPublicLink": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "createdAt": {
+        "return": "String!"
+      },
+      "createdBy": {
+        "return": "ID!"
+      },
+      "modifiedAt": {
+        "return": "String"
+      },
+      "path": {
+        "return": "String!"
+      },
+      "hits": {
+        "return": "Int!"
+      }
+    }
+  },
+  "messageLogUpdatedResponse": {
+    "variable": "type",
+    "fields": {
+      "userId": {
+        "return": "String!"
+      },
+      "contactNumber": {
+        "return": "String"
+      },
+      "agentNumber": {
+        "return": "String"
+      },
+      "data": {
+        "return": "String"
+      }
+    }
+  },
+  "CreateReportingSnapshotInput": {
+    "variable": "input",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "password": {
+        "return": "String"
+      },
+      "shareWithPublic": {
+        "return": "Boolean"
+      },
+      "shareWithEmails": {
+        "return": "[String!]"
+      },
+      "shareWithUsers": {
+        "return": "[ID!]"
+      }
+    }
+  },
+  "ReadReportingSnapshotInput": {
+    "variable": "input",
+    "fields": {
+      "linkId": {
+        "return": "ID"
+      },
+      "snapshotId": {
+        "return": "ID"
+      }
+    }
+  },
+  "UpdateReportingSnapshotInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "name": {
+        "return": "String"
+      },
+      "password": {
+        "return": "String"
+      },
+      "updateData": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "ShareReportingSnapshotInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "shareWithPublic": {
+        "return": "Boolean"
+      },
+      "shareWithEmails": {
+        "return": "[String!]"
+      },
+      "shareWithUsers": {
+        "return": "[ID!]"
+      }
+    }
+  },
+  "EmailInputTwo": {
+    "variable": "input",
+    "fields": {
+      "to": {
+        "return": "String!"
+      },
+      "subject": {
+        "return": "String!"
+      },
+      "html": {
+        "return": "String!"
+      },
+      "from": {
+        "return": "String"
+      },
+      "cc": {
+        "return": "String"
+      },
+      "bcc": {
+        "return": "String"
+      },
+      "text": {
+        "return": "String"
+      }
+    }
+  },
+  "AssigneeInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "emails": {
+        "return": "[EmailInput]!"
+      },
+      "active": {
+        "return": "Boolean!"
+      }
+    }
+  },
+  "ImportHeaderInput": {
+    "variable": "input",
+    "fields": {
+      "index": {
+        "return": "Int"
+      },
+      "keep": {
+        "return": "Boolean"
+      },
+      "matched": {
+        "return": "String"
+      },
+      "displayKey": {
+        "return": "String"
+      },
+      "originalKey": {
+        "return": "String"
+      }
+    }
+  },
+  "ContactImportOptionsInput": {
+    "variable": "input",
+    "fields": {
+      "importType": {
+        "return": "ContactImportType!"
+      },
+      "assignee": {
+        "return": "AssigneeInput"
+      },
+      "count": {
+        "return": "Int"
+      },
+      "headers": {
+        "return": "[ImportHeaderInput]"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "tenantName": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "reqName": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "[ContactTagInput]"
+      },
+      "skipEmail": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "Assignee": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "emails": {
+        "return": "[Email]!"
+      },
+      "active": {
+        "return": "Boolean!"
+      }
+    }
+  },
+  "ImportHeader": {
+    "variable": "type",
+    "fields": {
+      "index": {
+        "return": "Int"
+      },
+      "keep": {
+        "return": "Boolean"
+      },
+      "matched": {
+        "return": "String"
+      },
+      "displayKey": {
+        "return": "String"
+      },
+      "originalKey": {
+        "return": "String"
+      }
+    }
+  },
+  "ImportTag": {
+    "variable": "type",
+    "fields": {
+      "tagId": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      },
+      "order": {
+        "return": "Int"
+      }
+    }
+  },
+  "ImportOptions": {
+    "variable": "type",
+    "fields": {
+      "importType": {
+        "return": "ContactImportType!"
+      },
+      "assignee": {
+        "return": "Assignee"
+      },
+      "count": {
+        "return": "Int"
+      },
+      "headers": {
+        "return": "[ImportHeader]"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "tenantName": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "reqName": {
+        "return": "String"
+      },
+      "tags": {
+        "return": "[ImportTag]"
+      },
+      "skipEmail": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "ImportDoc": {
+    "variable": "type",
+    "fields": {
+      "completed": {
+        "return": "Boolean"
+      },
+      "contactsImported": {
+        "return": "Int"
+      },
+      "createdAt": {
+        "return": "String"
+      },
+      "duplicates": {
+        "return": "Int"
+      },
+      "inProgress": {
+        "return": "Boolean"
+      },
+      "fileUploaded": {
+        "return": "Boolean"
+      },
+      "key": {
+        "return": "String"
+      },
+      "status": {
+        "return": "String"
+      },
+      "options": {
+        "return": "ImportOptions"
+      }
+    }
+  },
+  "Suggestion": {
+    "variable": "type",
+    "fields": {
+      "mmKey": {
+        "return": "String"
+      },
+      "mmValue": {
+        "return": "String"
+      },
+      "mmType": {
+        "return": "String"
+      },
+      "pdlSuggestion": {
+        "return": "String"
+      }
+    }
+  },
+  "trainingUserInfo": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "ID!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "emails": {
+        "return": "[Email]!"
+      },
+      "created": {
+        "return": "String"
+      },
+      "active": {
+        "return": "Boolean!"
+      },
+      "username": {
+        "return": "String"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "productivity": {
+        "return": "UserAggs"
+      },
+      "notifications": {
+        "return": "Boolean"
+      },
+      "agentPhone": {
+        "return": "String"
+      },
+      "smsPhone": {
+        "return": "String"
+      },
+      "smsNotify": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "PipeflowSettingsInput": {
+    "variable": "input",
+    "fields": {
+      "candidates": {
+        "return": "String"
+      },
+      "meetings": {
+        "return": "String"
+      },
+      "offers": {
+        "return": "String"
+      },
+      "hires": {
+        "return": "String"
+      },
+      "featureEnabled": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "PipeflowSettings": {
+    "variable": "type",
+    "fields": {
+      "candidates": {
+        "return": "String"
+      },
+      "meetings": {
+        "return": "String"
+      },
+      "offers": {
+        "return": "String"
+      },
+      "hires": {
+        "return": "String"
+      },
+      "featureEnabled": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "BonzoWebhookDoc": {
+    "variable": "type",
+    "fields": {
+      "pipeflowSettings": {
+        "return": "PipeflowSettings"
+      }
+    }
+  },
+  "MarketSearchResponse": {
+    "variable": "type",
+    "fields": {
+      "found": {
+        "return": "Boolean!"
+      },
+      "branchData": {
+        "return": "Boolean"
+      },
+      "data": {
+        "return": "String"
+      }
+    }
+  },
+  "GeoCodeInput": {
+    "variable": "input",
+    "fields": {
+      "lat": {
+        "return": "Float!"
+      },
+      "lon": {
+        "return": "Float!"
+      }
+    }
+  },
+  "GeoCode": {
+    "variable": "type",
+    "fields": {
+      "lat": {
+        "return": "Float"
+      },
+      "lon": {
+        "return": "Float"
+      }
+    }
+  },
+  "UserMetric": {
+    "variable": "type",
+    "fields": {
+      "places": {
+        "return": "Int"
+      },
+      "maprender": {
+        "return": "Int"
+      },
+      "lastActivity": {
+        "return": "String"
+      }
+    }
+  },
+  "uploadResumeResponse": {
+    "variable": "type",
+    "fields": {
+      "uploadUrl": {
+        "return": "String"
+      },
+      "id": {
+        "return": "String"
+      },
+      "myKey": {
+        "return": "String"
+      }
+    }
+  },
+  "getResumeInfoResponse": {
+    "variable": "type",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "email": {
+        "return": "String"
+      },
+      "phoneNumber": {
+        "return": "String"
+      },
+      "address": {
+        "return": "String"
+      },
+      "profiles": {
+        "return": "String"
+      },
+      "skills": {
+        "return": "String"
+      },
+      "languages": {
+        "return": "String"
+      },
+      "summary": {
+        "return": "String"
+      },
+      "experience": {
+        "return": "String"
+      },
+      "education": {
+        "return": "String"
+      },
+      "duplicate": {
+        "return": "[DuplicateUsers]"
+      }
+    }
+  },
+  "DuplicateUsers": {
+    "variable": "type",
+    "fields": {
+      "name": {
+        "return": "String"
+      },
+      "email": {
+        "return": "String"
+      },
+      "phoneNumber": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "userId": {
+        "return": "String"
+      }
+    }
+  },
+  "CompanyLicense": {
+    "variable": "type",
+    "fields": {
+      "Status": {
+        "return": "String"
+      },
+      "CompanyNMLSID": {
+        "return": "String"
+      },
+      "StatusDate": {
+        "return": "String"
+      },
+      "LicenseNumber": {
+        "return": "String"
+      },
+      "IsAuthorized": {
+        "return": "String"
+      },
+      "IssueDate": {
+        "return": "String"
+      },
+      "Regulator": {
+        "return": "String"
+      },
+      "RenewedThrough": {
+        "return": "String"
+      },
+      "LicenseID": {
+        "return": "String"
+      },
+      "LicenseType": {
+        "return": "String"
+      }
+    }
+  },
+  "BranchInfo": {
+    "variable": "type",
+    "fields": {
+      "Street": {
+        "return": "String"
+      },
+      "Street2": {
+        "return": "String"
+      },
+      "City": {
+        "return": "String"
+      },
+      "Country": {
+        "return": "String"
+      },
+      "State": {
+        "return": "String"
+      },
+      "location": {
+        "return": "GeoCode"
+      },
+      "IsAuthorized": {
+        "return": "Boolean"
+      },
+      "CompanyNMLSID": {
+        "return": "String"
+      },
+      "BranchNMLSID": {
+        "return": "String"
+      },
+      "type": {
+        "return": "String"
+      },
+      "PostalCode": {
+        "return": "String"
+      },
+      "teamSize": {
+        "return": "Int"
+      },
+      "individuals": {
+        "return": "[String]"
+      },
+      "Name": {
+        "return": "String"
+      },
+      "volume": {
+        "return": "String"
+      },
+      "unitCount": {
+        "return": "Int"
+      }
+    }
+  },
+  "CompanyInfo": {
+    "variable": "type",
+    "fields": {
+      "Street": {
+        "return": "String"
+      },
+      "Street2": {
+        "return": "String"
+      },
+      "City": {
+        "return": "String"
+      },
+      "Country": {
+        "return": "String"
+      },
+      "State": {
+        "return": "String"
+      },
+      "location": {
+        "return": "GeoCode"
+      },
+      "CompanyNMLSID": {
+        "return": "String"
+      },
+      "PostalCode": {
+        "return": "String"
+      },
+      "FormedIn": {
+        "return": "String"
+      },
+      "DateFormed": {
+        "return": "String"
+      },
+      "BusinessStructure": {
+        "return": "String"
+      },
+      "PrimaryFederalRegulator": {
+        "return": "String"
+      },
+      "teamSize": {
+        "return": "Int"
+      },
+      "totalTeamSize": {
+        "return": "Int"
+      },
+      "individuals": {
+        "return": "[String]"
+      },
+      "isFedRegulated": {
+        "return": "Boolean"
+      },
+      "StockSymbol": {
+        "return": "String"
+      },
+      "licenses": {
+        "return": "[CompanyLicense]"
+      },
+      "RegistrationStatus": {
+        "return": "String"
+      },
+      "Name": {
+        "return": "String"
+      },
+      "volume": {
+        "return": "Float"
+      },
+      "unitCount": {
+        "return": "Int"
+      },
+      "branches": {
+        "return": "[String]"
+      },
+      "websites": {
+        "return": "[String]"
+      },
+      "BranchNMLSID": {
+        "return": "String"
+      },
+      "IsAuthorized": {
+        "return": "Boolean"
+      },
+      "trailing12": {
+        "return": "Trailing12Report"
+      }
+    }
+  },
+  "BranchDetailsResponse": {
+    "variable": "type",
+    "fields": {
+      "branchManagers": {
+        "return": "[BranchManager]"
+      },
+      "company": {
+        "return": "CompanyInfo"
+      }
+    }
+  },
+  "SortOptionInput": {
+    "variable": "input",
+    "fields": {
+      "keyword": {
+        "return": "String"
+      },
+      "order": {
+        "return": "String"
+      },
+      "nestedpath": {
+        "return": "String"
+      },
+      "missing": {
+        "return": "String"
+      }
+    }
+  },
+  "TeamTableOptionsInput": {
+    "variable": "input",
+    "fields": {
+      "from": {
+        "return": "Int"
+      },
+      "size": {
+        "return": "Int"
+      },
+      "term": {
+        "return": "String"
+      },
+      "sort": {
+        "return": "[SortOptionInput]"
+      }
+    }
+  },
+  "BranchTableOptionsInput": {
+    "variable": "input",
+    "fields": {
+      "from": {
+        "return": "Int"
+      },
+      "size": {
+        "return": "Int"
+      },
+      "term": {
+        "return": "String"
+      },
+      "sort": {
+        "return": "[SortOptionInput]"
+      }
+    }
+  },
+  "LeadsInfoWithOptions": {
+    "variable": "type",
+    "fields": {
+      "data": {
+        "return": "[Lead]"
+      },
+      "total": {
+        "return": "Int"
+      }
+    }
+  },
+  "BranchesWithOptions": {
+    "variable": "type",
+    "fields": {
+      "data": {
+        "return": "[BranchInfo]"
+      },
+      "total": {
+        "return": "Int"
+      }
+    }
+  },
+  "DupeLeadInput": {
+    "variable": "input",
+    "fields": {
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "nmlsId": {
+        "return": "String"
+      }
+    }
+  },
+  "AssigneeNameFragment": {
+    "variable": "type",
+    "fields": {
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      }
+    }
+  },
+  "LeadDuplicate": {
+    "variable": "type",
+    "fields": {
+      "nmlsId": {
+        "return": "String"
+      },
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "company": {
+        "return": "String"
+      },
+      "stage": {
+        "return": "String"
+      },
+      "reqName": {
+        "return": "String"
+      },
+      "contactId": {
+        "return": "String"
+      },
+      "reqId": {
+        "return": "String"
+      },
+      "assignedUser": {
+        "return": "AssigneeNameFragment"
+      }
+    }
+  },
+  "LeadDuplicatesResponse": {
+    "variable": "type",
+    "fields": {
+      "duplicates": {
+        "return": "[LeadDuplicate]"
+      }
+    }
+  },
+  "SearchIndividualsResponse": {
+    "variable": "type",
+    "fields": {
+      "location": {
+        "return": "GeoCode"
+      },
+      "originators": {
+        "return": "[Lead]!"
+      }
+    }
+  },
+  "SequenceQueue": {
+    "variable": "type",
+    "fields": {
+      "createdAt": {
+        "return": "String"
+      },
+      "scheduledAt": {
+        "return": "String!"
+      },
+      "eventId": {
+        "return": "String"
+      },
+      "queueId": {
+        "return": "String!"
+      },
+      "target": {
+        "return": "String!"
+      },
+      "source": {
+        "return": "String!"
+      },
+      "channel": {
+        "return": "String"
+      },
+      "sequenceId": {
+        "return": "String!"
+      },
+      "system": {
+        "return": "String!"
+      },
+      "step": {
+        "return": "String"
+      },
+      "contact": {
+        "return": "ContactNameFragment"
+      },
+      "req": {
+        "return": "ReqNameFragment"
+      },
+      "user": {
+        "return": "User"
+      },
+      "qaFlag": {
+        "return": "Boolean"
+      },
+      "runId": {
+        "return": "String"
+      }
+    }
+  },
+  "SequenceQueueInput": {
+    "variable": "input",
+    "fields": {
+      "createdAt": {
+        "return": "String"
+      },
+      "scheduledAt": {
+        "return": "String!"
+      },
+      "eventId": {
+        "return": "String"
+      },
+      "queueId": {
+        "return": "String!"
+      },
+      "target": {
+        "return": "String!"
+      },
+      "source": {
+        "return": "String!"
+      },
+      "channel": {
+        "return": "String"
+      },
+      "sequenceId": {
+        "return": "String!"
+      },
+      "title": {
+        "return": "String"
+      },
+      "system": {
+        "return": "String!"
+      },
+      "step": {
+        "return": "String"
+      },
+      "contact": {
+        "return": "ContactInput"
+      },
+      "req": {
+        "return": "ReqNameFragmentInput"
+      },
+      "user": {
+        "return": "UserFragmentInput"
+      },
+      "qaFlag": {
+        "return": "Boolean"
+      },
+      "runId": {
+        "return": "String"
+      }
+    }
+  },
+  "ReqNameFragmentInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      }
+    }
+  },
+  "ReqNameFragment": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      }
+    }
+  },
+  "UserFragmentInput": {
+    "variable": "input",
+    "fields": {
+      "id": {
+        "return": "String!"
+      },
+      "firstName": {
+        "return": "String!"
+      },
+      "lastName": {
+        "return": "String!"
+      },
+      "emails": {
+        "return": "[EmailInput]!"
+      },
+      "username": {
+        "return": "String"
+      },
+      "tenantId": {
+        "return": "String"
+      },
+      "agentPhone": {
+        "return": "String"
+      },
+      "smsPhone": {
+        "return": "String"
+      },
+      "smsNotify": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "TwilioPhoneLookup": {
+    "variable": "type",
+    "fields": {
+      "phoneType": {
+        "return": "String"
+      }
+    }
+  },
+  "CreditProfile": {
+    "variable": "type",
+    "fields": {
+      "dateCreated": {
+        "return": "String"
+      },
+      "createdBy": {
+        "return": "String"
+      },
+      "notificationEmail": {
+        "return": "String"
+      },
+      "lastUpdated": {
+        "return": "String"
+      },
+      "totalCredits": {
+        "return": "Int"
+      },
+      "creditMax": {
+        "return": "Int"
+      },
+      "notificationThreshold": {
+        "return": "Float"
+      },
+      "enabled": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "CreditUsageInput": {
+    "variable": "input",
+    "fields": {
+      "enrichment": {
+        "return": "Int"
+      },
+      "pipeline": {
+        "return": "Int"
+      }
+    }
+  },
+  "AddPipelineResponse": {
+    "variable": "type",
+    "fields": {
+      "success": {
+        "return": "Boolean!"
+      },
+      "message": {
+        "return": "String"
+      }
+    }
+  },
+  "TopState": {
+    "variable": "type",
+    "fields": {
+      "name": {
+        "return": "String!"
+      },
+      "count": {
+        "return": "Int"
+      },
+      "volume": {
+        "return": "Float"
+      }
+    }
+  },
+  "Trailing12Report": {
+    "variable": "type",
+    "fields": {
+      "period": {
+        "return": "String"
+      },
+      "endYear": {
+        "return": "Int"
+      },
+      "endMonth": {
+        "return": "Int"
+      },
+      "volume": {
+        "return": "Float"
+      },
+      "totalUnits": {
+        "return": "Int"
+      },
+      "avgPerUnit": {
+        "return": "Int"
+      },
+      "purchasePercentage": {
+        "return": "Int"
+      },
+      "productMix": {
+        "return": "ProductMix"
+      },
+      "transactionMix": {
+        "return": "TransactionMix"
+      },
+      "loanTypes": {
+        "return": "LoanTypes"
+      },
+      "topStates": {
+        "return": "[TopState]"
+      },
+      "topLenders": {
+        "return": "[TopState]"
+      },
+      "topOriginators": {
+        "return": "[TopState]"
+      },
+      "topCities": {
+        "return": "[TopState]"
+      },
+      "months": {
+        "return": "[MonthlyReport]"
+      },
+      "weeks": {
+        "return": "[WeeklyReport]"
+      }
+    }
+  },
+  "MortgageProduction": {
+    "variable": "type",
+    "fields": {
+      "count": {
+        "return": "Int"
+      },
+      "min": {
+        "return": "Int"
+      },
+      "max": {
+        "return": "Int"
+      },
+      "avg": {
+        "return": "Float"
+      },
+      "sum": {
+        "return": "Float"
+      }
+    }
+  },
+  "MonthlyReport": {
+    "variable": "type",
+    "fields": {
+      "daterange": {
+        "return": "String"
+      },
+      "production": {
+        "return": "MortgageProduction"
+      },
+      "productMix": {
+        "return": "ProductMix"
+      },
+      "purchase": {
+        "return": "Int"
+      },
+      "refi": {
+        "return": "Int"
+      },
+      "perpurchase": {
+        "return": "Int"
+      },
+      "perrefi": {
+        "return": "Int"
+      },
+      "perconventional": {
+        "return": "Int"
+      },
+      "pergovernment": {
+        "return": "Int"
+      }
+    }
+  },
+  "WeeklyReport": {
+    "variable": "type",
+    "fields": {
+      "daterange": {
+        "return": "String"
+      },
+      "production": {
+        "return": "MortgageProduction"
+      },
+      "period": {
+        "return": "String"
+      },
+      "endMonth": {
+        "return": "Int"
+      },
+      "endYear": {
+        "return": "Int"
+      },
+      "volume": {
+        "return": "Float"
+      },
+      "totalUnits": {
+        "return": "Int"
+      },
+      "avgPerUnit": {
+        "return": "Int"
+      },
+      "purchasePercentage": {
+        "return": "Int"
+      },
+      "productMix": {
+        "return": "ProductMix"
+      },
+      "transactionMix": {
+        "return": "TransactionMix"
+      },
+      "loanTypes": {
+        "return": "LoanTypes"
+      },
+      "topStates": {
+        "return": "[TopState]"
+      },
+      "topLenders": {
+        "return": "[TopState]"
+      },
+      "topOriginators": {
+        "return": "[TopState]"
+      },
+      "topCities": {
+        "return": "[TopState]"
+      }
+    }
+  },
+  "PointReport": {
+    "variable": "type",
+    "fields": {
+      "daterange": {
+        "return": "String"
+      },
+      "production": {
+        "return": "MortgageProduction"
+      },
+      "productMix": {
+        "return": "ProductMix"
+      },
+      "purchase": {
+        "return": "Int"
+      },
+      "refi": {
+        "return": "Int"
+      },
+      "perpurchase": {
+        "return": "Int"
+      },
+      "perrefi": {
+        "return": "Int"
+      },
+      "perconventional": {
+        "return": "Int"
+      },
+      "pergovernment": {
+        "return": "Int"
+      }
+    }
+  },
+  "PeriodAggReport": {
+    "variable": "type",
+    "fields": {
+      "daterange": {
+        "return": "String"
+      },
+      "production": {
+        "return": "MortgageProduction"
+      },
+      "period": {
+        "return": "String"
+      },
+      "endMonth": {
+        "return": "Int"
+      },
+      "endYear": {
+        "return": "Int"
+      },
+      "volume": {
+        "return": "Float"
+      },
+      "totalUnits": {
+        "return": "Int"
+      },
+      "avgPerUnit": {
+        "return": "Int"
+      },
+      "purchasePercentage": {
+        "return": "Int"
+      },
+      "productMix": {
+        "return": "ProductMix"
+      },
+      "transactionMix": {
+        "return": "TransactionMix"
+      },
+      "loanTypes": {
+        "return": "LoanTypes"
+      },
+      "topStates": {
+        "return": "[TopState]"
+      },
+      "topLenders": {
+        "return": "[TopState]"
+      },
+      "topOriginators": {
+        "return": "[TopState]"
+      },
+      "topCities": {
+        "return": "[TopState]"
+      }
+    }
+  },
+  "VolumeReport": {
+    "variable": "type",
+    "fields": {
+      "periodAggs": {
+        "return": "PeriodAggReport"
+      },
+      "trailing12": {
+        "return": "Trailing12Report"
+      },
+      "report": {
+        "return": "AnnualVolumeReport"
+      },
+      "monthly": {
+        "return": "[MonthlyReport]"
+      },
+      "weekly": {
+        "return": "[WeeklyReport]"
+      },
+      "years": {
+        "return": "[AnnualVolumeReport]"
+      },
+      "points": {
+        "return": "[PointReport]"
+      }
+    }
+  },
+  "EmailTemplate": {
+    "variable": "type",
+    "fields": {
+      "templateId": {
+        "return": "String"
+      },
+      "templateTitle": {
+        "return": "String"
+      },
+      "templateBody": {
+        "return": "String"
+      }
+    }
+  },
+  "EmailSignature": {
+    "variable": "type",
+    "fields": {
+      "signature": {
+        "return": "String"
+      },
+      "useSignature": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "CallForwardingResponse": {
+    "variable": "type",
+    "fields": {
+      "data": {
+        "return": "String"
+      }
+    }
+  },
+  "CognitoGroups": {
+    "variable": "type",
+    "fields": {
+      "email": {
+        "return": "String"
+      },
+      "groups": {
+        "return": "[String]"
+      }
+    }
+  },
+  "SequenceSummary": {
+    "variable": "type",
+    "fields": {
+      "contactID": {
+        "return": "String"
+      },
+      "firstName": {
+        "return": "String"
+      },
+      "lastName": {
+        "return": "String"
+      },
+      "totalSent": {
+        "return": "Int"
+      },
+      "step": {
+        "return": "Int"
+      },
+      "lastMessageSent": {
+        "return": "String"
+      },
+      "createdDate": {
+        "return": "String"
+      }
+    }
+  },
+  "SMSDeliveryTotal": {
+    "variable": "type",
+    "fields": {
+      "delivered": {
+        "return": "Int"
+      },
+      "total": {
+        "return": "Int"
+      }
+    }
+  },
+  "AutoLogOutUserResponse": {
+    "variable": "type",
+    "fields": {
+      "userName": {
+        "return": "String"
+      },
+      "data": {
+        "return": "String!"
+      },
+      "deviceKey": {
+        "return": "String"
+      }
+    }
+  },
+  "ReportObj": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "name": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "rType": {
+        "return": "String"
+      },
+      "cols": {
+        "return": "Int"
+      },
+      "rows": {
+        "return": "Int"
+      },
+      "order": {
+        "return": "Int"
+      },
+      "x": {
+        "return": "Int"
+      },
+      "y": {
+        "return": "Int"
+      },
+      "ribbon": {
+        "return": "String"
+      },
+      "data": {
+        "return": "String"
+      },
+      "esFilters": {
+        "return": "[ESFilter]"
+      },
+      "index": {
+        "return": "String"
+      },
+      "dateTarget": {
+        "return": "String"
+      },
+      "loaded": {
+        "return": "Boolean"
+      },
+      "useStoredData": {
+        "return": "Boolean"
+      },
+      "triggerChange": {
+        "return": "Boolean"
+      }
+    }
+  },
+  "ReportTemplate": {
+    "variable": "type",
+    "fields": {
+      "id": {
+        "return": "String"
+      },
+      "pKey": {
+        "return": "String"
+      },
+      "title": {
+        "return": "String"
+      },
+      "desc": {
+        "return": "String"
+      },
+      "reportObjects": {
+        "return": "[ReportObj]"
+      },
+      "reportTemplateSettings": {
+        "return": "ReportTemplateSettings"
+      }
+    }
+  },
+  "ReportTemplateSettings": {
+    "variable": "type",
+    "fields": {
+      "reqIds": {
+        "return": "[String]"
+      },
+      "userIds": {
+        "return": "[String]"
+      },
+      "startDate": {
+        "return": "String"
+      },
+      "endDate": {
+        "return": "String"
+      },
+      "selectedReqIds": {
+        "return": "[String]"
+      },
+      "selectedReqs": {
+        "return": "[UserReq]"
+      },
+      "selectedUserIds": {
+        "return": "[String]"
+      },
+      "selectedUsers": {
+        "return": "[User]"
+      },
+      "reportingTheme": {
+        "return": "[String]"
+      }
+    }
+  }
+}

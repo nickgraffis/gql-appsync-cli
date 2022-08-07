@@ -1,15 +1,18 @@
 type Query {
   getReq(id: ID!): Req
-  otherReq(id: ID!): Req @test(requires: "test", other: "test")
+  otherReq(
+    id: ID!,
+    test: ID!
+  ): Req @test(requires: "test", other: "test")
 }
 
 type Req {
   id: ID!
-  name: String!
-  description: String! @aws_whatever @aws_other
-  createdAt: String!
+  name: [String]
+  description: [String]! @aws_whatever @aws_other
+  createdAt: [String]!
   statics: Statistic @resolver(dataSource: "mmReqStatics")
-  updatedAt: String!
+  updatedAt: [String!]!
 }
 
 type Statistic {
